@@ -6,7 +6,9 @@ import router from './router'
 import Antdv from 'ant-design-vue';
 import ElementUI from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css';
+import 'element-ui/lib/theme-chalk/display.css';
 import 'ant-design-vue/dist/antd.css'; // or 'ant-design-vue/dist/antd.less'
+
 
 Vue.use(Antdv);
 Vue.use(ElementUI)
