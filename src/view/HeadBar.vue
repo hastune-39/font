@@ -2,9 +2,6 @@
 
   <div class="flextitle">
     <div>
-      <a-button type="primary" @click="addItem">添加</a-button><!--添加事件-->
-    </div>
-    <div>
       <a-input-group Large>
         <a-select default-value="0" style="width: 23%" @change="selectChange">
           <a-select-option value="0"> type1 </a-select-option>
