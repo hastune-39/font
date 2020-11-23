@@ -1,7 +1,7 @@
 <template>
   <div class="itemContent">
     <el-image
-      :src="url"
+      :src="itemurl"
       class="image"></el-image>
   </div>
 </template>
@@ -13,7 +13,7 @@
     props: {
       width: Number,
       height: Number,
-      url: String,
+      itemurl: String,
     },
 
     data() {

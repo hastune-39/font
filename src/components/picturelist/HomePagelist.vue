@@ -1,25 +1,31 @@
 <template>
   <div>
-    <el-button type="success" icon="el-icon-check" circle @click="selectAll"></el-button>
     <el-row :gutter="20" class="flex">
+<!--      <el-col :span="6">-->
+<!--        <div class="grid-content bg-purple">-->
+<!--          <div v-for="item in this.displayItems" class="itemBorder">-->
+<!--            <my-picture-item :itemurl="item.picture_address"></my-picture-item>-->
+<!--          </div>-->
+<!--        </div>-->
+<!--      </el-col>-->
       <el-col :span="6">
         <div class="grid-content bg-purple">
-          <div v-for="item in displayItems" class="itemBorder">
-            <my-picture-item :url="item.picture_address"></my-picture-item>
+          <div v-for="url in list1.pictureURL" class="itemBorder">
+            <my-picture-item :itemurl="url"></my-picture-item>
           </div>
         </div>
       </el-col>
       <el-col :span="6">
         <div class="grid-content bg-purple">
-          <div v-for="item in displayItems" class="itemBorder">
-            <my-picture-item :url="item.picture_address"></my-picture-item>
+          <div v-for="url in list2.pictureURL" class="itemBorder">
+            <my-picture-item :itemurl="url"></my-picture-item>
           </div>
         </div>
       </el-col>
       <el-col :span="6">
         <div class="grid-content bg-purple">
-          <div v-for="item in displayItems" class="itemBorder">
-            <my-picture-item :url="item.picture_address"></my-picture-item>
+          <div v-for="url in list3.pictureURL" class="itemBorder">
+            <my-picture-item :itemurl="url"></my-picture-item>
           </div>
         </div>
       </el-col>
@@ -38,17 +44,117 @@
 
     data() {
       return {
-        displayItems: []
+        displayItems: [
+          {
+            picture_id: Number,
+            painter_id: Number,
+            picture_address: String,
+            uploadTime: String,
+            title: String,
+          }
+        ],
+        list1: {
+          totalHeight: Number,
+          pictureURL: [],
+        },
+        list2: {
+          totalHeight: Number,
+          pictureURL: [],
+        },
+        list3: {
+          totalHeight: Number,
+          pictureURL: [],
+        },
+        pictureWidth: 5,
       }
     },
 
+    // var: timer=setInterval(this.makeSureLoad, 50),
     methods: {
-      selectAll() {
+      //loading picture function
+      imgload(url, callback) {
+        var img = new Image();
+        img.src = url;
+        // if (img.complete) {
+        //   //图片是否存在缓存
+        //   callback(img);
+        //   return;
+        // }
+        img.onload = function () {
+          callback(img);
+        }
+      },
+      // makeSureLoad(){
+      //   console.log('try to pull pictures...')
+      //   let allload = true;
+      //   for(let i=0; i<this.displayItems.length; i++){
+      //     let img = new Image();
+      //     img.src = this.displayItems[i].picture_address;
+      //     if (img.height <= 0){
+      //       allload = false;
+      //     }
+      //   }
+      //   return allload;
+      // },
+      initialsubList() {//性能问题?
+        this.list1.totalHeight = 0;
+        this.list2.totalHeight = 0;
+        this.list3.totalHeight = 0;
+        // this.list1.pictureURL.clear();
+        // this.list2.pictureURL.clear();
+        // this.list3.pictureURL.clear();
+        console.log('finish initialize');
+      },
+
+      allocPicture(img) {
+        console.log('图片信息为: src——'+img.src+", height——"+img.height+';');
+        console.log('待插入的列表的信息为:list1: '+this.list1.totalHeight+' list2: '+this.list2.totalHeight+ ' list3: '+this.list3.totalHeight);
+        if (this.list1.totalHeight <= this.list2.totalHeight &&
+          this.list1.totalHeight <= this.list3.totalHeight) {
+          this.list1.totalHeight += img.height;
+          this.list1.pictureURL = this.list1.pictureURL.concat(img.src);
+          console.log('put in list1');
+        } else if (this.list2.totalHeight <= this.list3.totalHeight) {
+          this.list2.totalHeight += img.height;
+          this.list2.pictureURL = this.list2.pictureURL.concat(img.src);
+          console.log('put in list2');
+        } else {
+          this.list3.totalHeight += img.height;
+          this.list3.pictureURL = this.list3.pictureURL.concat(img.src);
+          console.log('put in list3');
+        }
+      },
+
+
+      //mydebug
+      mydebug() {
+        console.log("list1 的图片是:");
+        for (let i = 0; i < this.list1.pictureURL.length; i++) {
+          console.log(this.list1.pictureURL[i]);
+        }
+        console.log("list2 的图片是:");
+        for (let i = 0; i < this.list2.pictureURL.length; i++) {
+          console.log(this.list2.pictureURL[i]);
+        }
+        console.log("list3 的图片是:");
+        for (let i = 0; i < this.list3.pictureURL.length; i++) {
+          console.log(this.list3.pictureURL[i]);
+        }
+      },
+
+      //axios function
+      selectAll() {//性能大损失
         console.log('prepareing selectAll axios...')
         axios.get('/pictures/selectAll').then((response) => {
           console.log('before selectAll axios...')
           this.displayItems = response.data;
           console.log(this.displayItems);
+          this.initialsubList();
+          //load all pictures
+          for(let i=0; i<this.displayItems.length;i++){
+            this.imgload(this.displayItems[i].picture_address, this.allocPicture);
+          }
+          console.log('finish load list?');
         }).catch(function (error) {
           if (error.response) {
             // The request was made and the server responded with a status code
@@ -68,8 +174,12 @@
           console.log(error.config);
         });
       }
-    }
+    },
 
+    created() {
+      this.selectAll();
+      console.log('finish selectAll');
+    }
   }
 </script>
 
@@ -115,7 +225,7 @@
     justify-content: center;
   }
 
-  .itemBorder{
+  .itemBorder {
     box-sizing: border-box;
     top: 0;
     left: 0;
