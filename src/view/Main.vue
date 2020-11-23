@@ -1,15 +1,13 @@
 <template>
-  <my-main-layout/>
+  <my-home-pagelist @selectAll />
 </template>
 
 <script>
-  import myPictureList from '../components/picturelist/Picturelist';
-  import myMainLayout from './main/MainLayout';
+  import myHomePagelist from '../components/picturelist/HomePagelist'
 
   export default {
     components: {
-      myPictureList,
-      myMainLayout,
+      myHomePagelist
     },
   }
 </script>
