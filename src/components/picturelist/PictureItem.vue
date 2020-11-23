@@ -1,9 +1,8 @@
 <template>
-  <div>
+  <div class="itemContent">
     <el-image
-      style="width: 100px; height: 100px"
       :src="url"
-      fit="contain"></el-image>
+      class="image"></el-image>
   </div>
 </template>
 
@@ -37,5 +36,19 @@
 </script>
 
 <style scoped>
+  img {
+    width: 100%;
+    height: 100%;
+    transition: opacity 0.3s, transform 0.3s ease;
+    object-fit: cover;
+    border-radius: 16px;
+  }
 
+  .itemContent{
+    position: relative;
+    width: 100%;
+    height: 100%;
+    border-radius: 16px;
+    overflow: hidden;
+  }
 </style>
