@@ -2,20 +2,7 @@
 
   <div class="flextitle">
     <div>
-      <a-input-group Large>
-        <a-select default-value="0" style="width: 23%" @change="selectChange">
-          <a-select-option value="0"> type1 </a-select-option>
-          <a-select-option value="1"> type2 </a-select-option>
-          <a-select-option value="2"> type3 </a-select-option>
-        </a-select>
-        <a-input-search
-          style="width: 77%"
-          placeholder="input search text"
-          allow-clear
-          enter-button
-          @search="searchModal"
-      />
-      </a-input-group>
+        <mysearch-box/>
     </div>
   </div>
 </template>

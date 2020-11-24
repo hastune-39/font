@@ -10,8 +10,13 @@ import 'element-ui/lib/theme-chalk/display.css';
 import 'ant-design-vue/dist/antd.css'; // or 'ant-design-vue/dist/antd.less'
 import axios from 'axios'
 import VueAxios from 'vue-axios'
+import store from './store/store';
 
 
+
+//global component
+import mySearchBox from './view/Header/searchBox';
+Vue.use(mySearchBox);
 
 Vue.use(Antdv);
 Vue.use(ElementUI);
@@ -25,6 +30,7 @@ new Vue({
   el: '#app',
   router,
   axios,
+  store,
   render: h => h(App),
   components: { App },
   template: '<App/>'

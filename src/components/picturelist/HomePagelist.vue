@@ -1,5 +1,7 @@
 <template>
   <div>
+    <el-button type="primary" icon="el-icon-edit" circle @click="changestore"></el-button>
+    <el-button type="success" icon="el-icon-check" circle @click="mydebug"></el-button>
     <el-row :gutter="20" class="flex">
       <el-col :span="6">
         <div class="grid-content bg-purple">
@@ -62,6 +64,15 @@
       }
     },
 
+    computed: {
+      storeKeyWord() {
+        console.log("搜索框keyword发生改变,准备重新搜索...");
+        console.log("搜索内容是: "+ this.$store.getters.storeKeyWord);
+        this.selectByKeyword(this.$store.getters.storeKeyWord);
+      }
+    },
+
+
     // var: timer=setInterval(this.makeSureLoad, 50),
     methods: {
       //loading picture function
@@ -121,18 +132,11 @@
 
       //mydebug
       mydebug() {
-        console.log("list1 的图片是:");
-        for (let i = 0; i < this.list1.pictureURL.length; i++) {
-          console.log(this.list1.pictureURL[i]);
-        }
-        console.log("list2 的图片是:");
-        for (let i = 0; i < this.list2.pictureURL.length; i++) {
-          console.log(this.list2.pictureURL[i]);
-        }
-        console.log("list3 的图片是:");
-        for (let i = 0; i < this.list3.pictureURL.length; i++) {
-          console.log(this.list3.pictureURL[i]);
-        }
+        console.log("搜索内容是: "+ this.$store.state.keyword);
+      },
+      changestore(){
+        console.log("尝试去改变store...");
+        this.$store.commit('searchKeyword', 'params');
       },
 
       //axios function
@@ -148,6 +152,40 @@
             this.imgload(this.displayItems[i].picture_address, this.allocPicture);
           }
           console.log('finish load list?');
+        }).catch(function (error) {
+          if (error.response) {
+            // The request was made and the server responded with a status code
+            // that falls out of the range of 2xx
+            console.log(error.response.data);
+            console.log(error.response.status);
+            console.log(error.response.headers);
+          } else if (error.request) {
+            // The request was made but no response was received
+            // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
+            // http.ClientRequest in node.js
+            console.log(error.request);
+          } else {
+            // Something happened in setting up the request that triggered an Error
+            console.log('Error', error.message);
+          }
+          console.log(error.config);
+        });
+      },
+
+      selectByKeyword(keyword){
+        axios.get('/pictures/searchKeyword', {
+          params: {
+            keyword: keyword
+          }
+        }).then((response) => {
+          console.log("完成了selectByKeyword的axios,其中keyword为: "+ this.keyword);
+          this.displayItems = response.data;
+          console.log(this.displayItems);
+          this.initialsubList();
+          //load all pictures
+          for(let i=0; i<this.displayItems.length;i++){
+            this.imgload(this.displayItems[i].picture_address, this.allocPicture);
+          }
         }).catch(function (error) {
           if (error.response) {
             // The request was made and the server responded with a status code
