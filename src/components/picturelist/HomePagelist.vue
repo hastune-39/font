@@ -1,13 +1,6 @@
 <template>
   <div>
     <el-row :gutter="20" class="flex">
-<!--      <el-col :span="6">-->
-<!--        <div class="grid-content bg-purple">-->
-<!--          <div v-for="item in this.displayItems" class="itemBorder">-->
-<!--            <my-picture-item :itemurl="item.picture_address"></my-picture-item>-->
-<!--          </div>-->
-<!--        </div>-->
-<!--      </el-col>-->
       <el-col :span="6">
         <div class="grid-content bg-purple">
           <div v-for="url in list1.pictureURL" class="itemBorder">
