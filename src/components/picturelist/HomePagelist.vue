@@ -1,7 +1,7 @@
 <template>
   <div>
     <!--    <el-button type="primary" icon="el-icon-edit" circle @click="changestore"></el-button>-->
-    <el-button type="success" icon="el-icon-check" circle @click="mydebug"></el-button>
+<!--    <el-button type="success" icon="el-icon-check" circle @click="mydebug"></el-button>-->
     <el-row :gutter="20" class="flex">
       <el-col :span="6">
         <div class="grid-content bg-purple">
@@ -60,7 +60,7 @@
           totalHeight: Number,
           pictureURL: [],
         },
-        pictureWidth: 5,
+        pictureWidth: 500,
       }
     },
 
@@ -101,22 +101,26 @@
         console.log('finish initialize');
       },
 
+      calculateImageHeight(width, height){
+        console.log("宽度是: "+ width, "高度是: "+height);
+        console.log("相对高度是: "+ ((this.pictureWidth)*height/width));
+        return ((this.pictureWidth)*height/width);
+      },
+
       allocPicture(img) {
         console.log('图片信息为: src——' + img.src + ", height——" + img.height + ';');
         console.log('待插入的列表的信息为:list1: ' + this.list1.totalHeight + ' list2: ' + this.list2.totalHeight + ' list3: ' + this.list3.totalHeight);
         if (this.list1.totalHeight <= this.list2.totalHeight &&
           this.list1.totalHeight <= this.list3.totalHeight) {
-          this.list1.totalHeight += img.height;
+          this.list1.totalHeight += this.calculateImageHeight(img.width, img.height);
           this.list1.pictureURL.push(img.src);
           console.log('put in list1');
         } else if (this.list2.totalHeight <= this.list3.totalHeight) {
-          this.list2.totalHeight += img.height;
-          // this.list2.pictureURL = this.list2.pictureURL.concat(img.src);
+          this.list2.totalHeight += this.calculateImageHeight(img.width, img.height);
           this.list2.pictureURL.push(img.src);
           console.log('put in list2');
         } else {
-          this.list3.totalHeight += img.height;
-          // this.list3.pictureURL = this.list3.pictureURL.concat(img.src);
+          this.list3.totalHeight += this.calculateImageHeight(img.width, img.height);
           this.list3.pictureURL.push(img.src)
           console.log('put in list3');
         }
@@ -264,8 +268,8 @@
     box-sizing: border-box;
     top: 0;
     left: 0;
-    /*width: 100%;*/
-    /*height: 100%;*/
+    width: 100%;
+    height: 100%;
     padding: 8px;
     padding-bottom: 16px;
     overflow: hidden;
@@ -280,11 +284,11 @@
   }
 
   img {
-    /*width: 100%;*/
-    /*height: 100%;*/
-    /*transition: opacity 0.3s, transform 0.3s ease;*/
-    /*object-fit: cover;*/
-    /*border-radius: 16px;*/
+    width: 100%;
+    height: 100%;
+    transition: opacity 0.3s, transform 0.3s ease;
+    object-fit: cover;
+    border-radius: 16px;
   }
 
   .count {
@@ -299,15 +303,15 @@
   }
 
   img {
-    /*float: left;*/
-    /*fill: white;*/
-    /*height: 20px;*/
-    /*width: 20px;*/
+    float: left;
+    fill: white;
+    height: 20px;
+    width: 20px;
   }
 
   span {
-    /*float: right;*/
-    /*padding: 0 2px;*/
-    /*line-height: 20px;*/
+    float: right;
+    padding: 0 2px;
+    line-height: 20px;
   }
 </style>
