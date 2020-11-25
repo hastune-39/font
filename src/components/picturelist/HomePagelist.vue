@@ -1,6 +1,6 @@
 <template>
   <div>
-    <el-button type="primary" icon="el-icon-edit" circle @click="changestore"></el-button>
+    <!--    <el-button type="primary" icon="el-icon-edit" circle @click="changestore"></el-button>-->
     <el-button type="success" icon="el-icon-check" circle @click="mydebug"></el-button>
     <el-row :gutter="20" class="flex">
       <el-col :span="6">
@@ -64,14 +64,11 @@
       }
     },
 
-    computed: {
-      storeKeyWord() {
-        console.log("搜索框keyword发生改变,准备重新搜索...");
-        console.log("搜索内容是: "+ this.$store.getters.storeKeyWord);
-        this.selectByKeyword(this.$store.getters.storeKeyWord);
-      }
-    },
+    computed: {},
 
+    watch: {
+      '$route': 'search',
+    },
 
     // var: timer=setInterval(this.makeSureLoad, 50),
     methods: {
@@ -88,31 +85,25 @@
           callback(img);
         }
       },
-      // makeSureLoad(){
-      //   console.log('try to pull pictures...')
-      //   let allload = true;
-      //   for(let i=0; i<this.displayItems.length; i++){
-      //     let img = new Image();
-      //     img.src = this.displayItems[i].picture_address;
-      //     if (img.height <= 0){
-      //       allload = false;
-      //     }
-      //   }
-      //   return allload;
-      // },
+
       initialsubList() {//性能问题?
         this.list1.totalHeight = 0;
         this.list2.totalHeight = 0;
         this.list3.totalHeight = 0;
-        // this.list1.pictureURL.clear();
-        // this.list2.pictureURL.clear();
-        // this.list3.pictureURL.clear();
+        this.list1.pictureURL = [];
+        this.list2.pictureURL = [];
+        this.list3.pictureURL = [];
+        console.log("查看清空效果");
+        console.log("displayItem的图片个数为: "+ this.displayItems.length);
+        console.log("list1图片个数为：" + this.list1.pictureURL.length);
+        console.log("list2图片个数为：" + this.list2.pictureURL.length);
+        console.log("list3图片个数为：" + this.list3.pictureURL.length);
         console.log('finish initialize');
       },
 
       allocPicture(img) {
-        console.log('图片信息为: src——'+img.src+", height——"+img.height+';');
-        console.log('待插入的列表的信息为:list1: '+this.list1.totalHeight+' list2: '+this.list2.totalHeight+ ' list3: '+this.list3.totalHeight);
+        console.log('图片信息为: src——' + img.src + ", height——" + img.height + ';');
+        console.log('待插入的列表的信息为:list1: ' + this.list1.totalHeight + ' list2: ' + this.list2.totalHeight + ' list3: ' + this.list3.totalHeight);
         if (this.list1.totalHeight <= this.list2.totalHeight &&
           this.list1.totalHeight <= this.list3.totalHeight) {
           this.list1.totalHeight += img.height;
@@ -132,14 +123,23 @@
 
       //mydebug
       mydebug() {
-        console.log("搜索内容是: "+ this.$store.state.keyword);
-      },
-      changestore(){
-        console.log("尝试去改变store...");
-        this.$store.commit('searchKeyword', 'params');
+        console.log("displayItem里的内容是: ");
+        console.log("list1长度为: "+ this.list1.pictureURL.length+ " list2长度为: "+ this.list2.pictureURL.length+ " list3长度为: "+ this.list3.pictureURL.length)
       },
 
       //axios function
+      search() {
+        let _this = this;
+        console.log("router发生变化并监听到了");
+        console.log("监听的类型是: " + _this.$route.params.type);
+        if (_this.$route.params.type == 'keyword') {
+          let keyword = _this.$route.params.keyword;
+          _this.selectByKeyword(keyword);
+        }else {
+
+        }
+      },
+
       selectAll() {//性能大损失
         console.log('prepareing selectAll axios...')
         axios.get('/pictures/selectAll').then((response) => {
@@ -148,7 +148,7 @@
           console.log(this.displayItems);
           this.initialsubList();
           //load all pictures
-          for(let i=0; i<this.displayItems.length;i++){
+          for (let i = 0; i < this.displayItems.length; i++) {
             this.imgload(this.displayItems[i].picture_address, this.allocPicture);
           }
           console.log('finish load list?');
@@ -172,18 +172,19 @@
         });
       },
 
-      selectByKeyword(keyword){
+      selectByKeyword(keyword) {
+        console.log("开始准备selectByKeyword的axios,其中keyword是: " + keyword);
         axios.get('/pictures/searchKeyword', {
           params: {
             keyword: keyword
           }
         }).then((response) => {
-          console.log("完成了selectByKeyword的axios,其中keyword为: "+ this.keyword);
+          console.log("完成了selectByKeyword的axios,其中keyword为: " + keyword);
           this.displayItems = response.data;
           console.log(this.displayItems);
           this.initialsubList();
           //load all pictures
-          for(let i=0; i<this.displayItems.length;i++){
+          for (let i = 0; i < this.displayItems.length; i++) {
             this.imgload(this.displayItems[i].picture_address, this.allocPicture);
           }
         }).catch(function (error) {

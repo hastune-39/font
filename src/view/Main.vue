@@ -1,5 +1,5 @@
 <template>
-  <my-home-pagelist @selectAll />
+  <my-home-pagelist/>
 </template>
 
 <script>

@@ -13,7 +13,16 @@
   export default {
     methods: {
       onSearch(value) {
-        console.log(value);
+        console.log("搜索栏内容是: "+ value);
+        //路由跳转
+        this.$router.push({
+          path: '/Home/searchByKeywords',
+          name: 'searchKeywords',
+          params: {
+            type: 'keyword',
+            keyword: value,
+          }
+        })
       },
     },
   };

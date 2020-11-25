@@ -1,19 +1,9 @@
 <template>
   <div id="app">
-    <BasicLayout></BasicLayout>
+<!--    <router-link to="/Home">测试跳转</router-link>-->
+    <router-view></router-view>
   </div>
 </template>
-
-<script>
-  import BasicLayout from './view/BasicLayout';
-
-  export default {
-    name: 'App',
-    components: {
-      BasicLayout,
-    },
-  }
-</script>
 
 <style>
   #app {

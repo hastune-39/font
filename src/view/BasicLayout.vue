@@ -9,7 +9,7 @@
           <my-head-bar/>
         </el-header>
         <el-main>
-          <my-main/>
+          <router-view/>
         </el-main>
       </el-container>
     </el-container>
