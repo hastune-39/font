@@ -107,15 +107,17 @@
         if (this.list1.totalHeight <= this.list2.totalHeight &&
           this.list1.totalHeight <= this.list3.totalHeight) {
           this.list1.totalHeight += img.height;
-          this.list1.pictureURL = this.list1.pictureURL.concat(img.src);
+          this.list1.pictureURL.push(img.src);
           console.log('put in list1');
         } else if (this.list2.totalHeight <= this.list3.totalHeight) {
           this.list2.totalHeight += img.height;
-          this.list2.pictureURL = this.list2.pictureURL.concat(img.src);
+          // this.list2.pictureURL = this.list2.pictureURL.concat(img.src);
+          this.list2.pictureURL.push(img.src);
           console.log('put in list2');
         } else {
           this.list3.totalHeight += img.height;
-          this.list3.pictureURL = this.list3.pictureURL.concat(img.src);
+          // this.list3.pictureURL = this.list3.pictureURL.concat(img.src);
+          this.list3.pictureURL.push(img.src)
           console.log('put in list3');
         }
       },
@@ -124,8 +126,10 @@
       //mydebug
       mydebug() {
         console.log("displayItem里的内容是: ");
-        console.log("list1长度为: "+ this.list1.pictureURL.length+ " list2长度为: "+ this.list2.pictureURL.length+ " list3长度为: "+ this.list3.pictureURL.length)
-      },
+        console.log("list1长度为: " + this.list1.pictureURL.length+ " list1的内容是: " + this.list1.pictureURL);
+        console.log("list2长度为: " + this.list2.pictureURL.length+ " list2的内容是: " + this.list2.pictureURL);
+        console.log("list3长度为: " + this.list3.pictureURL.length+ " list3的内容是: " + this.list3.pictureURL);
+        },
 
       //axios function
       search() {
@@ -219,11 +223,9 @@
   .el-row {
     margin-bottom: 20px;
 
-  &
+  }
   :last-child {
     margin-bottom: 0;
-  }
-
   }
   .el-col {
     border-radius: 4px;
@@ -240,6 +242,7 @@
   .bg-purple-light {
     background: #e5e9f2;
   }
+
 
   .grid-content {
     border-radius: 4px;
@@ -261,8 +264,8 @@
     box-sizing: border-box;
     top: 0;
     left: 0;
-    width: 100%;
-    height: 100%;
+    /*width: 100%;*/
+    /*height: 100%;*/
     padding: 8px;
     padding-bottom: 16px;
     overflow: hidden;
@@ -277,11 +280,11 @@
   }
 
   img {
-    width: 100%;
-    height: 100%;
-    transition: opacity 0.3s, transform 0.3s ease;
-    object-fit: cover;
-    border-radius: 16px;
+    /*width: 100%;*/
+    /*height: 100%;*/
+    /*transition: opacity 0.3s, transform 0.3s ease;*/
+    /*object-fit: cover;*/
+    /*border-radius: 16px;*/
   }
 
   .count {
@@ -296,15 +299,15 @@
   }
 
   img {
-    float: left;
-    fill: white;
-    height: 20px;
-    width: 20px;
+    /*float: left;*/
+    /*fill: white;*/
+    /*height: 20px;*/
+    /*width: 20px;*/
   }
 
   span {
-    float: right;
-    padding: 0 2px;
-    line-height: 20px;
+    /*float: right;*/
+    /*padding: 0 2px;*/
+    /*line-height: 20px;*/
   }
 </style>

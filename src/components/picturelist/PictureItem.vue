@@ -17,11 +17,7 @@
     },
 
     data() {
-      // return {
-      //   width: null,
-      //   height: null,
-      //   url: null,
-      // };
+      return {};
     },
 
     computed: {//计算样式
@@ -45,9 +41,9 @@
   }
 
   .itemContent{
-    position: relative;
-    width: 100%;
-    height: 100%;
+    /*position: relative;*/
+    /*width: 100%;*/
+    /*height: 100%;*/
     border-radius: 16px;
     overflow: hidden;
   }
