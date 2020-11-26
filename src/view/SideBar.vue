@@ -1,43 +1,7 @@
 <template>
   <div class="LeftSide">
-<!--    <el-radio-group v-model="isCollapse" style="margin-bottom: 10px;">-->
-<!--      <el-radio-button :label="false">展开</el-radio-button>-->
-<!--      <el-radio-button :label="true">收起</el-radio-button>-->
-<!--    </el-radio-group>-->
-    <el-menu default-active="1-4-1" class="el-menu-vertical-demo" @open="handleOpen" @close="handleClose"
-             :collapse="isCollapse">
-      <el-submenu index="1">
-        <template slot="title">
-          <i class="el-icon-location"></i>
-          <span slot="title">导航一</span>
-        </template>
-        <el-menu-item-group>
-          <span slot="title">分组一</span>
-          <el-menu-item index="1-1">选项1</el-menu-item>
-          <el-menu-item index="1-2">选项2</el-menu-item>
-        </el-menu-item-group>
-        <el-menu-item-group title="分组2">
-          <el-menu-item index="1-3">选项3</el-menu-item>
-        </el-menu-item-group>
-        <el-submenu index="1-4">
-          <span slot="title">选项4</span>
-          <el-menu-item index="1-4-1">选项1</el-menu-item>
-        </el-submenu>
-      </el-submenu>
-      <el-menu-item index="2">
-        <i class="el-icon-menu"></i>
-        <span slot="title">导航二</span>
-      </el-menu-item>
-      <el-menu-item index="3" disabled>
-        <i class="el-icon-document"></i>
-        <span slot="title">导航三</span>
-      </el-menu-item>
-      <el-menu-item index="4">
-        <i class="el-icon-setting"></i>
-        <span slot="title">导航四</span>
-      </el-menu-item>
-    </el-menu>
-    </a-layout-sider>
+    <my-nothing-side-bar v-if="userID < 0"></my-nothing-side-bar>
+    <my-user-side-bar v-else></my-user-side-bar>
   </div>
 </template>
 
@@ -59,17 +23,46 @@
     flex-direction: column;
     justify-content: space-between;
     align-content: center;
+
+  .beian {
+    width: 15px;
+    margin: 0 auto;
+    line-height: 24px;
+    font-size: 12px;
+    word-wrap: break-word; /*英文的时候需要加上这句，自动换行*/
+    word-break: break-all;
   }
+  }
+
+
 </style>
 
 <script>
+  import store from '../store/store';
+  import myNothingSideBar from './Side/NothingSideBar';
+  import myUserSideBar from './Side/UserSideBar';
+
+
   export default {
     name: 'SideBar',
+
+    components: {
+      myNothingSideBar,
+      myUserSideBar,
+    },
+
     data() {
       return {
         isCollapse: true
       };
     },
+
+    computed: {
+      userID(){
+        return store.state.user.userID;
+      }
+    },
+
     methods: {
       handleOpen(key, keyPath) {
         console.log(key, keyPath);

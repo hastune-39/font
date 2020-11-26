@@ -1,7 +1,7 @@
 <template>
   <div class="border">
-    <el-container>
-      <el-aside width="100 px">
+    <el-container class="page-container">
+      <el-aside  style="background-color: rgb(238, 241, 246)" width="65px">
         <my-side-bar/>
       </el-aside>
       <el-container>
@@ -33,8 +33,10 @@
 </script>
 
 <style scoped>
-  .border {
-    margin-top: 0px;
-    padding-top: 0px;
+
+  .page-container {
+  /deep/ .el-main {
+    padding: 0px;
+  }
   }
 </style>
