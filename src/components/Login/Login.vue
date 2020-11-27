@@ -11,8 +11,8 @@
         <el-input type="password" v-model="ruleForm.checkPass" autocomplete="off"></el-input>
       </el-form-item>
       <el-form-item>
-<!--        <el-button type="primary" @click="login(this.$refs.ruleForm.loginName, this.$refs.ruleForm.pass)">登录</el-button>-->
-<!--        <el-button @click="registe(this.$refs.ruleForm.loginName, this.$refs.ruleForm.pass)">注册</el-button>-->
+        <!--        <el-button type="primary" @click="login(this.$refs.ruleForm.loginName, this.$refs.ruleForm.pass)">登录</el-button>-->
+        <!--        <el-button @click="registe(this.$refs.ruleForm.loginName, this.$refs.ruleForm.pass)">注册</el-button>-->
         <el-button type="primary" @click="login">登录</el-button>
         <el-button @click="registe">注册</el-button>
       </el-form-item>
@@ -24,11 +24,12 @@
   import axios from 'axios';
 
   export default {
+
     data() {
+
+
       var loginNameValidate = (rule, value, callback) => {
-        if (value === '') {
-          callback(new Error('请输入账号'));
-        } else if (value.length != 10) {
+        if (!this.loginNameRegex.test(value)) {
           callback(new Error('账号长度需10位数字'));
         } else {
           if (this.ruleForm.checkPass !== '') {
@@ -39,8 +40,8 @@
       };
 
       var validatePass = (rule, value, callback) => {
-        if (value === '') {
-          callback(new Error('请输入密码'));
+        if (!this.passRegex.test(value)) {
+          callback(new Error('请输入6~16位的密码'));
         } else {
           if (this.ruleForm.checkPass !== '') {
             this.$refs.ruleForm.validateField('checkPass');
@@ -74,7 +75,9 @@
           checkPass: [
             {validator: validatePass2, trigger: 'blur'}
           ],
-        }
+        },
+        loginNameRegex: /\d{10}/,
+        passRegex: /.{6,16}/,
       };
     },
 
@@ -83,6 +86,7 @@
         this.$refs[formName].validate((valid) => {
           if (valid) {
             alert('submit!');
+            return true;
           } else {
             console.log('error submit!!');
             return false;
@@ -94,13 +98,27 @@
         this.$refs[formName].resetFields();
       },
 
-      submitValidate(inputLoginname, inputPassword){
-        if(inputLoginname== null||inputLoginname=="" || inputLoginname.length!=10){
+      submitValidate(inputLoginname, inputPassword) {
+        let _this = this;
+        if (!this.loginNameRegex.test(inputLoginname)) {
           console.log("submitValidate: 用户名格式错误!");
+          _this.$notify({
+            title: '用户名格式错误!',
+            message: '用户名应当为十位数字',
+            type: 'warning'
+          });
+          return false;
         }
-        if(inputPassword == null || inputPassword.length<6){
-          console.log("submitValidate: 密码格式错误!")
+        if (!this.passRegex.test(inputPassword)) {
+          console.log("submitValidate: 密码格式错误!");
+          _this.$notify({
+            title: '密码格式错误!',
+            message: '密码应当6~16位',
+            type: 'warning'
+          });
+          return false;
         }
+        return true;
       },
 
       //axios
@@ -108,17 +126,19 @@
         //loading动画
         let inputLoginName = this.ruleForm.loginName;
         let inputPassword = this.ruleForm.pass;
+        let _this = this;
         //提交验证
-        console.log("registe axios: 用户名和密码分别为——"+inputLoginName+" "+inputPassword);
-        this.submitValidate(inputLoginName, inputPassword);
-
+        console.log("registe axios: 用户名和密码分别为——" + inputLoginName + " " + inputPassword);
+        if (!this.submitValidate(inputLoginName, inputPassword)) {
+          return;
+        }
         axios.post("users/registe", null, {
           params: {
             login_name: inputLoginName,
             pass_word: inputPassword,
           }
         }).then(function (response) {
-          console.log("注册了一个用户,用户名为: "+inputLoginName, " 密码为: "+ inputPassword);
+          console.log("注册了一个用户,用户名为: " + inputLoginName, " 密码为: " + inputPassword);
           //关闭loading动画，提示成功
         }).catch(function (error) {
           if (error.response) {
@@ -140,22 +160,26 @@
         })
       },
 
-      login(){
+      login() {
         let inputLoginName = this.ruleForm.loginName;
         let inputPassword = this.ruleForm.pass;
         let _this = this;
         //提交验证
-        console.log("login axios: 用户名和密码分别为——"+inputLoginName+" "+inputPassword);
+        console.log("login axios: 用户名和密码分别为——" + inputLoginName + " " + inputPassword);
+        if (!this.submitValidate(inputLoginName, inputPassword)) {
+          return;
+        }
+
         this.submitValidate(inputLoginName, inputPassword);
         axios.get("/users/get", {
           params: {
             login_name: inputLoginName,
-            pass_word: inputPassword,
+            password: inputPassword,
           }
         }).then(function (response) {
           //如何处理错误，放到catch中?
           let user = response.data;
-          console.log("登录请求成功,用户为: " + user.login_name + " "+ user.pass_word);
+          console.log("登录请求成功,用户为: " + user.login_name + " " + user.pass_word);
           //设置vuex
           store.commit('login', response);
           //登陆成功并:
@@ -165,6 +189,34 @@
           _this.$emit('loginSuccessfully');
           //(3)sidebar重新渲染
           console.log('试一试');
+        }).catch(function (error) {
+          if (error.response) {
+            // The request was made and the server responded with a status code
+            // that falls out of the range of 2xx
+            console.log(error.response.data);
+            console.log(error.response.status);
+            console.log(error.response.headers);
+            if (error.response.status == 500) {
+              //用户名不存在;
+              _this.$notify.error({
+                title: '用户名不存在',
+              });
+            } else if (error.response.status == 501) {
+              //用户密码错误!
+              _this.$notify.error({
+                title: '密码错误',
+              });
+            }
+          } else if (error.request) {
+            // The request was made but no response was received
+            // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
+            // http.ClientRequest in node.js
+            console.log(error.request);
+          } else {
+            // Something happened in setting up the request that triggered an Error
+            console.log('Error', error.message);
+          }
+          console.log(error.config);
         })
       }
     }

@@ -5,6 +5,7 @@
       enter-button="Search"
       size="large"
       @search="onSearch"
+      color="pink"
     />
   </div>
 </template>

@@ -1,25 +1,23 @@
 <template>
   <div class="LeftSide Position">
-    <el-menu default-active="1-4-1" class="el-menu-vertical-demo" :collapse="true">
+    <el-menu default-active="1-4-1" class="el-menu-vertical-demo" :collapse="true" >
       <el-submenu index="1">
         <template slot="title">
-          <i class="el-icon-location"></i>
+          <i class="el-icon-user-solid"></i>
         </template>
         <el-menu-item-group>
+          <my-individual-card/>
 <!--          <span slot="title">分组一</span>-->
 <!--          <el-menu-item index="1-1">选项1</el-menu-item>-->
 <!--          <el-menu-item index="1-2">选项2</el-menu-item>-->
         </el-menu-item-group>
-        <el-menu-item-group title="分组2">
-          <el-menu-item index="1-3">选项3</el-menu-item>
-        </el-menu-item-group>
-        <el-submenu index="1-4">
-          <span slot="title">选项4</span>
-          <el-menu-item index="1-4-1">选项1</el-menu-item>
-        </el-submenu>
+<!--        <el-submenu index="1-4">-->
+<!--          <span slot="title">选项4</span>-->
+<!--          <el-menu-item index="1-4-1">选项1</el-menu-item>-->
+<!--        </el-submenu>-->
       </el-submenu>
       <el-menu-item index="2">
-        <i class="el-icon-menu"></i>
+        <i class="el-icon-star-off"></i>
       </el-menu-item>
       <el-menu-item index="3" disabled>
         <i class="el-icon-document"></i>
@@ -34,11 +32,13 @@
 
 <script>
   import myPictureItem from '../../components/picturelist/PictureItem';
+  import myIndividualCard from './UserBar/IndividualCard';
 
   export default {
     name: "UserSideBar",
     components: {
       myPictureItem,
+      myIndividualCard,
     },
     data() {
       return {};
