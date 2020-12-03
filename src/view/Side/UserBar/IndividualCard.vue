@@ -4,38 +4,80 @@
       <div><img src="../../../../static/profilePicture/0.jpg" class="image ind"></div>
       <div style="height: max-content"><a-divider type="vertical" /><a-divider type="vertical"  /></div>
       <div style="padding: 14px;">
-        <div class="individuleProduce username">初音未来</div>
-        <div class="individuleProduce useraddress">日本 東京都</div>
+        <div style="display: flex; flex-direction: row;">
+          <div class="individuleProduce username">{{userName}}</div>
+          <i class="el-icon-edit" style="color: pink" @click="updateUserName"></i>
+        </div>
+        <div class="individuleProduce useraddress">{{address}}</div>
         <div class="bottom clearfix individuleProduce usertext">
           <a-skeleton active/>
         </div>
       </div>
     </div>
+    <my-user-message ref="updateMessage"/>
   </el-card>
 </template>
 
 <script>
   import store from '../../../store/store';
+  import myUserMessage from '../../../components/User/UpdateMessage';
 
   export default {
     name: "IndividualCard",
+    components: {
+      myUserMessage,
+    },
+
+    data() {
+      return{
+        inputUserName: "miku",
+        inputUserAddress: "",
+        inputUserSignature: "",
+        inputUserProfilePicture: ""
+      }
+    },
+
     computed: {
+      userID(){
+        return this.$store.state.user.userID;
+      },
       userName() {
-        return store.state.user.userName;
+        return this.$store.state.user.userName;
       },
       sex() {
-        return store.state.user.sex;
+        return this.$store.state.user.sex;
       },
       address() {
-        return store.state.user.address;
+        return this.$store.state.user.address;
       },
       profile_picture() {
-        return store.state.user.profile_picture;
+        return this.$store.state.user.profile_picture;
       },
       signature() {
-        return store.state.user.signature;
+        return this.$store.state.user.signature;
       }
 
+    },
+    methods: {
+      debug(){
+        console.log(this.userID, this.userName, this.address);
+      },
+
+      updateUserName(){
+        this.$refs.updateMessage.updateUserName(this.inputUserName);
+      },
+
+      updateUserAddress(){
+        this.$refs.updateMessage.updateUserName(this.inputUserAddress);
+      },
+
+      updateUserSignature(){
+        this.$refs.updateMessage.updateUserName(this.inputUserSignature);
+      },
+
+      updateUserProfilePicture(){
+        this.$refs.updateMessage.updateUserName(this.inputUserProfilePicture);
+      },
     }
   }
 </script>

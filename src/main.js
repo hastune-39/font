@@ -12,12 +12,9 @@ import axios from 'axios'
 import VueAxios from 'vue-axios'
 import store from './store/store';
 
-
-
 //global component
 import mySearchBox from './view/Header/searchBox';
 Vue.use(mySearchBox);
-
 Vue.use(Antdv);
 Vue.use(ElementUI);
 Vue.use(VueAxios, axios);

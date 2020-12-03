@@ -40,6 +40,12 @@
       myPictureItem,
       myIndividualCard,
     },
+
+    computed(){
+
+    },
+
+
     data() {
       return {};
     },

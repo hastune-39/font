@@ -1,6 +1,6 @@
 <template>
   <div class="LeftSide">
-    <my-nothing-side-bar v-if="userID > 0"></my-nothing-side-bar>
+    <my-nothing-side-bar v-if="userID < 0"></my-nothing-side-bar>
     <my-user-side-bar v-else></my-user-side-bar>
   </div>
 </template>
@@ -59,7 +59,7 @@
 
     computed: {
       userID(){
-        return store.state.user.userID;
+        return this.$store.state.user.userID;
       }
     },
 

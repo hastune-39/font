@@ -4,6 +4,7 @@ import Vuex from 'vuex'
 Vue.use(Vuex)
 
 export default new Vuex.Store({
+  name: 'store',
   state: {
     user: {
       userID: -1,
@@ -19,6 +20,10 @@ export default new Vuex.Store({
 
   mutations: {
     login (state, inputUser) {
+      state.user = inputUser;
+    },
+
+    updateUserMessage(state, inputUser){
       state.user = inputUser;
     }
   },

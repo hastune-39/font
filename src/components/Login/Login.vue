@@ -181,7 +181,7 @@
           let user = response.data;
           console.log("登录请求成功,用户为: " + user.login_name + " " + user.pass_word);
           //设置vuex
-          store.commit('login', response);
+          _this.$store.commit('login', response.data);
           //登陆成功并:
           //(1)设置当前dialog不可见
           //(2)弹出登陆成功提示
