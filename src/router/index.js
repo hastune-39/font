@@ -1,8 +1,8 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import HomePagelist from "../components/picturelist/HomePagelist";
+import HomePage from '../view/main/HomePage';
 import BasicLayout from '../view/BasicLayout';
-import Helloword from '../components/HelloWorld';
+import UserCollection from '../view/main/UserCollection';
 
 Vue.use(Router)
 
@@ -10,25 +10,35 @@ export default new Router({
   routes: [
     {
       path: '/',
-      redirect: '/Home/all',
+      redirect: '/Main/all/1',
     },
 
     {
-      path: '/Home',
+      path: '/Main',
       component: BasicLayout,
       children: [
         {
-          path: 'all',
-          component: HomePagelist,
+          path: 'all/:random',
+          name: 'HomePage',
+          component: HomePage,
         },
 
         {
           path: 'searchByKeywords/:type/:keyword',
           name: 'searchKeywords',
-          component: HomePagelist,
+          component: HomePage,
+        },
+        {
+          path: 'User/Collection/:random',
+          name: 'userCollection',
+          component: UserCollection,
         }
       ]
     },
+
+    {
+      path: '/User'
+    }
 
     // {
     //   path: '/Helloworld',

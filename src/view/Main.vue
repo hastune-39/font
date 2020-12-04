@@ -3,7 +3,7 @@
 </template>
 
 <script>
-  import myHomePagelist from '../components/picturelist/HomePagelist'
+  import myHomePagelist from '../components/picturelist/PictureList'
 
   export default {
     components: {

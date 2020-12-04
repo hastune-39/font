@@ -1,6 +1,9 @@
 <template>
   <div class="LeftSide Position">
-    <el-menu default-active="1-4-1" class="el-menu-vertical-demo" :collapse="true" >
+    <el-menu  class="el-menu-vertical-demo" :collapse="true" >
+      <el-menu-item>
+        <i class="el-icon-s-home" @click="skipToHome"></i>
+      </el-menu-item>
       <el-submenu index="1">
         <template slot="title">
           <i class="el-icon-user-solid"></i>
@@ -17,8 +20,9 @@
 <!--        </el-submenu>-->
       </el-submenu>
       <el-menu-item index="2">
-        <i class="el-icon-star-off"></i>
-      </el-menu-item>
+        <el-tooltip class="item" effect="dark" content="我的收藏" placement="right"></el-tooltip>
+        <i class="el-icon-star-off" @click="skipToUserCollection"></i>
+        </el-menu-item>
       <el-menu-item index="3" disabled>
         <i class="el-icon-document"></i>
       </el-menu-item>
@@ -49,6 +53,33 @@
     data() {
       return {};
     },
+
+    methods: {
+      skipToHome(){
+        console.log("正在跳转至主页...");
+        let random = Math.floor(Math.random()*10000);
+        console.log("random为："+ random);
+        this.$router.push({
+          path: '/Main/all',
+          name: 'HomePage',
+          params: {
+            random: random,//随机路由，刷新作用
+          }
+        })
+      },
+      skipToUserCollection(){
+        console.log("正在跳转至用户收藏页...");
+        let random = Math.floor(Math.random()*10000);
+        console.log("random为："+ random);
+        this.$router.push({
+          path: '/Main/User/Collection',
+          name: 'userCollection',
+          params: {
+            random: random,//随机路由，刷新作用
+          }
+        })
+      },
+    }
   }
 </script>
 

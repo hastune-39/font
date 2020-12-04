@@ -1,10 +1,11 @@
 <template>
   <div class="item">
     <div class="item-content">
-      <img :src="itemurl" class="item-img">
+      <img :src="picturesMessage.picture.picture_address" class="item-img" @click="mydebug">
       <el-dropdown>
-        <i class="el-icon-star-off"></i>
-        <!--      <Like/>-->
+        <my-like ref="like" :user_id="picturesMessage.collection.user_id"
+                 :picture_id="picturesMessage.picture.picture_id"
+                 :is-collected="isCollected" />
         <!-- <el-dropdown-menu slot="dropdown"></el-dropdown-menu> -->
       </el-dropdown>
     </div>
@@ -12,17 +13,22 @@
 </template>
 
 <script>
+  import myLike from '../collection/Like';
+
   export default {
     name: "PictureItem",
+    components: {
+      myLike,
+    },
 
     props: {//获取pagelist所传递的图片信息参数，以及是否收藏参数
-      picturesMessage:{
+      picturesMessage: {
         width: Number,
         height: Number,
         picture: {
           picture_id: Number,
           painter_id: Number,
-          picture_address: String,
+          picture_address: null,
           uploadTime: String,
           title: String,
         },
@@ -35,25 +41,30 @@
     },
 
     data() {
-      return {
-        isCollected: Boolean,
-      };
+      return {}
     },
 
     computed: {//计算样式
-
+      isCollected() {
+        return (this.picturesMessage.collection.user_id >= 0) ? true : false;
+      }
     },
 
     methods: {
       //提交收藏需要图片id与用户id
-      submitCollect(pictureID, userID){
+      submitCollect(pictureID, userID) {
         //axios提交
       },
 
       //取消收藏
-      cancelCollect(pictureID, userID){
+      cancelCollect(pictureID, userID) {
 
       },
+
+      mydebug(){
+        console.log("图片收藏信息: user_id为"+ this.picturesMessage.collection.user_id + " picture_id为"+this.picturesMessage.picture.picture_id);
+        console.log("计算属性："+ this.isCollected);
+      }
     },
   }
 
@@ -70,6 +81,7 @@
     padding-bottom: 16px;
     overflow: hidden;
   }
+
   .item-content {
     position: relative;
     width: 100%;
@@ -78,7 +90,7 @@
     overflow: hidden;
   }
 
-  .item-img{
+  .item-img {
     width: 100%;
     height: 100%;
     transition: opacity 0.3s, transform 0.3s ease;
