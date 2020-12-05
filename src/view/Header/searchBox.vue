@@ -4,7 +4,7 @@
       enter-button="搜索"
       size="large"
       @search="onSearch"
-      color="pink"
+      style = "background-color: pink"
     />
   </div>
 </template>

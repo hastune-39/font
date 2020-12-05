@@ -1,6 +1,5 @@
 <template>
   <div id="app">
-<!--    <router-link to="/Home">测试跳转</router-link>-->
     <router-view></router-view>
   </div>
 </template>

@@ -25,7 +25,7 @@
       </el-submenu>
       <el-menu-item>
         <el-tooltip class="item" effect="dark" content="我的关注" placement="right">
-          <a-icon type="user-add"/>
+          <a-icon type="user-add" @click="skipToUserFollow"/>
         </el-tooltip>
       </el-menu-item>
       <el-menu-item>
@@ -119,6 +119,19 @@
           }
         })
       },
+
+      skipToUserFollow(){
+        console.log("正在跳转至用户关注页...");
+        let random = Math.floor(Math.random() * 10000);
+        console.log("random为：" + random);
+        this.$router.push({
+          path: '/Main/User/Follow',
+          name: 'userFollow',
+          params: {
+            random: random,//随机路由，刷新作用
+          }
+        })
+      }
     }
   }
 </script>

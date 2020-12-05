@@ -21,6 +21,7 @@
   import myHeadBar from './HeadBar';
   import mySideBar from './SideBar';
   import myMain from './Main';
+  import myUserFollow from './main/UserFollow';
 
   export default {
     name: "BasicLayout",
@@ -28,6 +29,7 @@
       myHeadBar,
       mySideBar,
       myMain,
+      myUserFollow,
     },
   }
 </script>
