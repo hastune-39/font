@@ -1,34 +1,72 @@
 <template>
   <div class="LeftSide Position">
-    <el-menu  class="el-menu-vertical-demo" :collapse="true" >
+    <el-menu class="el-menu-vertical-demo" :collapse="true">
       <el-menu-item>
-        <i class="el-icon-s-home" @click="skipToHome"></i>
+        <el-tooltip class="item" effect="dark" content="主页" placement="right">
+          <i class="el-icon-s-home" @click="skipToHome"></i>
+        </el-tooltip>
       </el-menu-item>
-      <el-submenu index="1">
+      <el-submenu>
         <template slot="title">
-          <i class="el-icon-user-solid"></i>
+          <el-tooltip class="item" effect="dark" content="个人名片" placement="right">
+            <a-icon type="idcard"/>
+          </el-tooltip>
         </template>
         <el-menu-item-group>
           <my-individual-card/>
-<!--          <span slot="title">分组一</span>-->
-<!--          <el-menu-item index="1-1">选项1</el-menu-item>-->
-<!--          <el-menu-item index="1-2">选项2</el-menu-item>-->
+          <!--          <span slot="title">分组一</span>-->
+          <!--          <el-menu-item index="1-1">选项1</el-menu-item>-->
+          <!--          <el-menu-item index="1-2">选项2</el-menu-item>-->
         </el-menu-item-group>
-<!--        <el-submenu index="1-4">-->
-<!--          <span slot="title">选项4</span>-->
-<!--          <el-menu-item index="1-4-1">选项1</el-menu-item>-->
-<!--        </el-submenu>-->
+        <!--        <el-submenu index="1-4">-->
+        <!--          <span slot="title">选项4</span>-->
+        <!--          <el-menu-item index="1-4-1">选项1</el-menu-item>-->
+        <!--        </el-submenu>-->
       </el-submenu>
-      <el-menu-item index="2">
-        <el-tooltip class="item" effect="dark" content="我的收藏" placement="right"></el-tooltip>
-        <i class="el-icon-star-off" @click="skipToUserCollection"></i>
+      <el-menu-item>
+        <el-tooltip class="item" effect="dark" content="我的关注" placement="right">
+          <a-icon type="user-add"/>
+        </el-tooltip>
+      </el-menu-item>
+      <el-menu-item>
+        <!--        怎么调整tooltip参数使得图标不变小?-->
+        <el-tooltip class="item" effect="dark" content="我的收藏" placement="right">
+          <i class="el-icon-star-off" @click="skipToUserCollection"></i>
+        </el-tooltip>
+      </el-menu-item>
+      <el-menu-item>
+        <el-tooltip class="item" effect="dark" content="浏览历史" placement="right">
+          <i class="el-icon-video-camera"></i>
+        </el-tooltip>
+      </el-menu-item>
+
+
+      <el-menu-item disabled="true">
+        <i class="el-icon-minus"></i>
+      </el-menu-item>
+
+      <el-menu-item v-if="true">
+        <el-tooltip class="item" effect="dark" content="上传你的第一幅作品，快注册成为小画家吧~" placement="right">
+          <a-icon type="smile"/>
+        </el-tooltip>
+      </el-menu-item>
+      <template v-else>
+        <el-menu-item>
+          <el-tooltip class="item" effect="dark" content="上传作品" placement="right">
+            <i class="el-icon-circle-plus-outline"></i>
+          </el-tooltip>
         </el-menu-item>
-      <el-menu-item index="3" disabled>
-        <i class="el-icon-document"></i>
-      </el-menu-item>
-      <el-menu-item index="4">
-        <i class="el-icon-setting"></i>
-      </el-menu-item>
+        <el-menu-item>
+          <el-tooltip class="item" effect="dark" content="我的画作" placement="right">
+            <i class="el-icon-picture"></i>
+          </el-tooltip>
+        </el-menu-item>
+        <el-menu-item>
+          <el-tooltip class="item" effect="dark" content="我的画集" placement="right">
+            <i class="el-icon-notebook-1"></i>
+          </el-tooltip>
+        </el-menu-item>
+      </template>
     </el-menu>
     <!--    </a-layout-sider>-->
   </div>
@@ -37,15 +75,17 @@
 <script>
   import myPictureItem from '../../components/picturelist/PictureItem';
   import myIndividualCard from './UserBar/IndividualCard';
+  import myPainterSideBar from './PainterSideBar';
 
   export default {
     name: "UserSideBar",
     components: {
       myPictureItem,
       myIndividualCard,
+      myPainterSideBar,
     },
 
-    computed(){
+    computed() {
 
     },
 
@@ -55,10 +95,10 @@
     },
 
     methods: {
-      skipToHome(){
+      skipToHome() {
         console.log("正在跳转至主页...");
-        let random = Math.floor(Math.random()*10000);
-        console.log("random为："+ random);
+        let random = Math.floor(Math.random() * 10000);
+        console.log("random为：" + random);
         this.$router.push({
           path: '/Main/all',
           name: 'HomePage',
@@ -67,10 +107,10 @@
           }
         })
       },
-      skipToUserCollection(){
+      skipToUserCollection() {
         console.log("正在跳转至用户收藏页...");
-        let random = Math.floor(Math.random()*10000);
-        console.log("random为："+ random);
+        let random = Math.floor(Math.random() * 10000);
+        console.log("random为：" + random);
         this.$router.push({
           path: '/Main/User/Collection',
           name: 'userCollection',
@@ -103,7 +143,7 @@
     align-content: center;
   }
 
-  .Position{
+  .Position {
     /*position: absolute;*/
     /*top: 20px;*/
   }

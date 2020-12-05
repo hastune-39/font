@@ -3,11 +3,8 @@
     <el-menu class="el-menu-vertical-demo" :collapse="true">
       <el-menu-item index="2">
         <el-tooltip class="item" effect="dark" content="快登录打开新世界的大门吧~" placement="right">
-          <i class="el-icon-location" @click="dialogVisible = true"></i>
+          <i class="el-icon-user-solid" @click="dialogVisible = true"></i>
         </el-tooltip>
-      </el-menu-item>
-      <el-menu-item index="2">
-        <i class="el-icon-menu"></i>
       </el-menu-item>
     </el-menu>
 

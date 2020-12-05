@@ -1,8 +1,7 @@
 <template>
   <div>
     <a-input-search
-      placeholder="input search text"
-      enter-button="Search"
+      enter-button="搜索"
       size="large"
       @search="onSearch"
       color="pink"
