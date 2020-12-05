@@ -12,6 +12,10 @@
       FollowList
     },
 
+    watch: {
+      '$route': 'update'
+    },
+
 
     created() {//创建时调用函数
       let _this = this;
@@ -20,6 +24,16 @@
         _this.$refs.followlist.getAllPaintersInfo();
         _this.$refs.followlist.getPainterInfo();
       })
+    },
+
+    methods: {
+      //刷新页面
+      update(){
+        let _this = this;
+        _this.$refs.followlist.getPaintersID();
+        _this.$refs.followlist.getAllPaintersInfo();
+        _this.$refs.followlist.getPainterInfo();
+      }
     }
   }
 </script>
