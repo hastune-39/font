@@ -136,6 +136,17 @@
         return ((this.pictureWidth) * height / width);
       },
 
+      allocAllPicture(){
+        let _this = this;
+        for (let i = 0; i < _this.displayItems.length; i++) {
+          _this.imgload(_this.displayItems[i], _this.allocPicture);
+        }
+        //若用户已经登录，加载收藏关系
+        if (_this.$store.state.user.userID >= 0) {
+          _this.selectAllCollections();
+        }
+      },
+
       allocPicture(img, pictureItem) {
         let _this = this;
         console.log('图片信息为: src——' + img.src + ", height——" + img.height + ';');
@@ -213,14 +224,7 @@
           //2.列表初始化
           _this.initialsubList();
           //3.分配图片
-          for (let i = 0; i < _this.displayItems.length; i++) {
-            _this.imgload(_this.displayItems[i], _this.allocPicture);
-          }
-          //4.若用户已经登录，加载收藏关系
-          if (_this.$store.state.user.userID >= 0) {
-            _this.selectAllCollections();
-            _this.allocAllCollectionMessage();
-          }
+          _this.allocAllPicture();
         }).catch(function (error) {
           console.log(error);
         });
@@ -270,7 +274,7 @@
 
         console.log("准备获得用户所有的收藏图片...");
         //1.axios获得当前用户所有的收藏图片
-        axios.get('/collection/getPictures',{
+        axios.get('/collection/getPictures', {
           params: {
             user_id: _this.$store.state.user.userID,
           }
@@ -282,12 +286,7 @@
           _this.startInit(3);
 
           //3.分配图片
-          for (let i = 0; i < _this.displayItems.length; i++) {
-            _this.imgload(_this.displayItems[i], _this.allocPicture);
-          }
-
-          //4.每张图片添加已收藏
-          _this.selectAllCollections();
+          _this.allocAllPicture();
           // _this.allocAllCollectionMessage();异步请求!又忘了！八嘎
         }).catch(function (error) {
           console.log(error);
@@ -339,7 +338,28 @@
             }
           }
         }
-      }
+      },
+
+      /***
+       * 画师页部分
+       */
+      showPainterPictures(painter_id) {
+        let _this = this;
+        //1.初始化
+        _this.startInit(3);
+        //2.axios获得一个画师所有图片
+        axios.get('/Painter/Pictures',{
+          params: {
+            painter_id: painter_id,
+          }
+        }).then(function (response) {
+          _this.displayItems = response.data;
+          //3.分配图片
+          _this.allocAllPicture();
+        }).catch(function (err) {
+          console.log(err);
+        })
+      },
     },
   }
 </script>

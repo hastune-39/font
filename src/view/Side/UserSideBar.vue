@@ -6,7 +6,7 @@
           <i class="el-icon-s-home" @click="skipToHome"></i>
         </el-tooltip>
       </el-menu-item>
-      <el-submenu>
+      <el-submenu index="1">
         <template slot="title">
           <el-tooltip class="item" effect="dark" content="个人名片" placement="right">
             <a-icon type="idcard"/>
@@ -45,7 +45,7 @@
         <i class="el-icon-minus"></i>
       </el-menu-item>
 
-      <el-menu-item v-if="true">
+      <el-menu-item v-if="false">
         <el-tooltip class="item" effect="dark" content="上传你的第一幅作品，快注册成为小画家吧~" placement="right">
           <a-icon type="smile"/>
         </el-tooltip>

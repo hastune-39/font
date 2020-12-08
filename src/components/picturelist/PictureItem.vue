@@ -1,13 +1,17 @@
 <template>
   <div class="item">
     <div class="item-content">
+      <div style="position: relative; z-index: 1">
       <img :src="picturesMessage.picture.picture_address" class="item-img" @click="mydebug">
-      <el-dropdown>
+      </div>
+      <div style="position: relative; z-index: 2">
+        <el-dropdown>
         <my-like ref="like" :user_id="picturesMessage.collection.user_id"
                  :picture_id="picturesMessage.picture.picture_id"
                  :is-collected="isCollected" />
         <!-- <el-dropdown-menu slot="dropdown"></el-dropdown-menu> -->
       </el-dropdown>
+      </div>
     </div>
   </div>
 </template>

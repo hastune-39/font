@@ -1,13 +1,8 @@
 <template>
-  <div class="artist-list">
-
-    <div>
-      <el-card v-for="(follow,index) in followList" :key="index"
-        shadow="hover"
-        style="margin-top: 0px; margin-bottom: 20px; padding: 5px">
+  <div>
+    <div v-for="(follow,index) in followList" :key="index">
         <FollowItem :painter-info="painterInfo[index]" :picturesInfo="picturesInfo[index]"
         @addFollow="addFollow" @cancelFollow = "cancelFollow"></FollowItem>
-      </el-card>
     </div>
 
     <el-row :gutter="20">
@@ -223,16 +218,7 @@
 
   /*new*/
 
-  .artist-list {
-    max-height: calc(100vh - 60px);
-    width: 1044px;
-    padding: 0px;
-    align-self: center;
-    align-content: center;
-    /*设置居中样式，除了外部留白应该怎么做？*/
-    margin-left: auto;
-    margin-right: auto;
-  }
+
 
   /*个人头像*/
   .profile-picture {

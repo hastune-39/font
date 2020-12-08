@@ -4,6 +4,7 @@ import HomePage from '../view/main/HomePage';
 import BasicLayout from '../view/BasicLayout';
 import UserCollection from '../view/main/UserCollection';
 import UserFollow from '../view/main/UserFollow';
+import PainterPage from '../view/main/painter/PainterPage';
 
 Vue.use(Router)
 
@@ -39,6 +40,11 @@ export default new Router({
           name: 'userFollow',
           component: UserFollow,
         },
+        {
+          path: 'Painter/:painter_id',
+          name: 'PainterPage',
+          component: PainterPage,
+        }
       ]
     },
 
