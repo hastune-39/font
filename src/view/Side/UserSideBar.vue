@@ -53,7 +53,7 @@
       <template v-else>
         <el-menu-item>
           <el-tooltip class="item" effect="dark" content="上传作品" placement="right">
-            <i class="el-icon-circle-plus-outline"></i>
+            <i class="el-icon-circle-plus-outline" @click="openPictureForm"></i>
           </el-tooltip>
         </el-menu-item>
         <el-menu-item>
@@ -69,6 +69,8 @@
       </template>
     </el-menu>
     <!--    </a-layout-sider>-->
+
+    <my-upload-picture ref="upPictureIcon"></my-upload-picture>
   </div>
 </template>
 
@@ -76,6 +78,7 @@
   import myPictureItem from '../../components/picturelist/PictureItem';
   import myIndividualCard from './UserBar/IndividualCard';
   import myPainterSideBar from './PainterSideBar';
+  import myUploadPicture from './PainterBar/UploadPictureIcon';
 
   export default {
     name: "UserSideBar",
@@ -83,6 +86,7 @@
       myPictureItem,
       myIndividualCard,
       myPainterSideBar,
+      myUploadPicture,
     },
 
     computed() {
@@ -131,6 +135,11 @@
             random: random,//随机路由，刷新作用
           }
         })
+      },
+
+      openPictureForm(){
+        console.log("user-side-bar");
+        this.$refs.upPictureIcon.open();
       }
     }
   }

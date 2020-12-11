@@ -5,6 +5,7 @@ import BasicLayout from '../view/BasicLayout';
 import UserCollection from '../view/main/UserCollection';
 import UserFollow from '../view/main/UserFollow';
 import PainterPage from '../view/main/painter/PainterPage';
+import PictureUpload from '../components/picture/Upload';
 
 Vue.use(Router)
 
@@ -52,6 +53,10 @@ export default new Router({
       path: '/User'
     },
 
+    {
+      path: '/Upload',
+      component: PictureUpload
+    },
 
 
     // {
