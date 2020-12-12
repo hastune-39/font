@@ -1,6 +1,8 @@
 <template>
-  <i v-if="isCollected" class="el-icon-star-on" @click="cancelCollection"></i>
-  <i v-else class="el-icon-star-off" @click="submitCollection"></i>
+  <i v-if="isCollected"  class="el-icon-star-on" @click="cancelCollection"
+     style="font-size: 30px; color: antiquewhite; opacity: 0.8"></i>
+  <i v-else class="el-icon-star-off" @click="submitCollection"
+     style="font-size: 30px; color: antiquewhite; opacity: 0.6"></i>
 </template>
 
 <script>
@@ -14,7 +16,9 @@
     },
 
     data(){
-      return {}
+      return {
+        color: '',
+      }
     },
 
     computed: {
@@ -105,6 +109,11 @@
 
     created() {//创建时将是否收藏的信息赋值给status
       this.status = this.isCollected;
+      //随机color
+      let r = Math.floor(Math.random()*255);
+      let g = Math.floor(Math.random()*255);
+      let b = Math.floor(Math.random()*255);
+      this.color = 'rgba('+ this.r +','+ this.g +','+ this.b +',0.8)';
     }
   }
 </script>

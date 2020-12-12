@@ -6,7 +6,8 @@
       <el-col v-for="(list,index) in lists" :key="index" :span="6">
         <div class="grid-content bg-purple">
           <div v-for="picturesMessage in list.picturesMessage" class="itemBorder">
-            <my-picture-item :pictures-message="picturesMessage"></my-picture-item>
+            <my-picture-item :pictures-message="picturesMessage"
+            @deletePicture="deletePicture"></my-picture-item>
           </div>
         </div>
       </el-col>
@@ -17,10 +18,12 @@
 <script>
   import myPictureItem from "./PictureItem";
   import axios from 'axios';
+  import myPictureUtils from '../picture/PictureUtils';
 
   export default {
     components: {
-      myPictureItem
+      myPictureItem,
+      myPictureUtils,
     },
 
     data() {
@@ -48,6 +51,8 @@
             totalHeight: Number,
             picturesMessage: [
               {
+                column: Number,
+                index: Number,
                 width: Number,
                 height: Number,
                 picture: {
@@ -136,7 +141,7 @@
         return ((this.pictureWidth) * height / width);
       },
 
-      allocAllPicture(){
+      allocAllPicture() {
         let _this = this;
         for (let i = 0; i < _this.displayItems.length; i++) {
           _this.imgload(_this.displayItems[i], _this.allocPicture);
@@ -168,6 +173,8 @@
         //2.将图片信息插入最短的一列，并更新列总高度
         _this.lists[insertColumn].totalHeight += _this.calculateImageHeight(img.width, img.height);
         let newPictureMessage = {
+          column: insertColumn,
+          index: _this.lists[insertColumn].picturesMessage.length,
           width: img.width,
           height: img.height,
           picture: pictureItem,
@@ -348,7 +355,7 @@
         //1.初始化
         _this.startInit(3);
         //2.axios获得一个画师所有图片
-        axios.get('/Painter/Pictures',{
+        axios.get('/Painter/Pictures', {
           params: {
             painter_id: painter_id,
           }
@@ -360,6 +367,23 @@
           console.log(err);
         })
       },
+
+      /***
+       * 画师管理图片部分
+       */
+      deletePicture(picture_id, column, index) {
+        console.log("picture-list-delete-picture");
+        // this.lists[column].picturesMessage.splice(index,1);
+        //双重循环找要删的图片
+        for(let column=0;column<this.lists.length;column++){
+          for(let index = 0;index<this.lists[column].picturesMessage.length; index++){
+            if(this.lists[column].picturesMessage[index].picture.picture_id == picture_id){
+              this.lists[column].picturesMessage.splice(index,1);
+            }
+          }
+        }
+
+      }
     },
   }
 </script>

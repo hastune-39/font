@@ -6,6 +6,7 @@ import UserCollection from '../view/main/UserCollection';
 import UserFollow from '../view/main/UserFollow';
 import PainterPage from '../view/main/painter/PainterPage';
 import PictureUpload from '../components/picture/Upload';
+import PicturePage from '../components/PicturePage/page';
 
 Vue.use(Router)
 
@@ -45,6 +46,11 @@ export default new Router({
           path: 'Painter/:painter_id',
           name: 'PainterPage',
           component: PainterPage,
+        },
+        {
+          path: '/Picture',
+          name: 'PicturePage',
+          component: PicturePage,
         }
       ]
     },
@@ -57,6 +63,8 @@ export default new Router({
       path: '/Upload',
       component: PictureUpload
     },
+
+
 
 
     // {

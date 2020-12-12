@@ -1,16 +1,19 @@
 <template>
   <div class="item">
     <div class="item-content">
-      <div style="position: relative; z-index: 1">
-      <img :src="picturesMessage.picture.picture_address" class="item-img" @click="mydebug">
+      <div style="position: relative;">
+        <img :src="picturesMessage.picture.picture_address" class="item-img" @click="mydebug">
       </div>
-      <div style="position: relative; z-index: 2">
-        <el-dropdown>
+      <div style="position: absolute; border-radius: 2px;border-color: deepskyblue; left: 0%;bottom: 0%;
+  margin-left: 5px; margin-bottom: 5px">
         <my-like ref="like" :user_id="picturesMessage.collection.user_id"
                  :picture_id="picturesMessage.picture.picture_id"
-                 :is-collected="isCollected" />
+                 :is-collected="isCollected"/>
         <!-- <el-dropdown-menu slot="dropdown"></el-dropdown-menu> -->
-      </el-dropdown>
+      </div>
+
+      <div style="position: absolute; right: 0%; top: 0%; margin-right: 5px; margin-top: 5px">
+        <my-picture-utils :picture="picturesMessage.picture"/>
       </div>
     </div>
   </div>
@@ -18,15 +21,19 @@
 
 <script>
   import myLike from '../collection/Like';
+  import myPictureUtils from '../picture/PictureUtils';
 
   export default {
     name: "PictureItem",
     components: {
       myLike,
+      myPictureUtils,
     },
 
     props: {//获取pagelist所传递的图片信息参数，以及是否收藏参数
       picturesMessage: {
+        column: Number,
+        index: Number,
         width: Number,
         height: Number,
         picture: {
@@ -65,9 +72,15 @@
 
       },
 
-      mydebug(){
-        console.log("图片收藏信息: user_id为"+ this.picturesMessage.collection.user_id + " picture_id为"+this.picturesMessage.picture.picture_id);
-        console.log("计算属性："+ this.isCollected);
+      mydebug() {
+        console.log("图片收藏信息: user_id为" + this.picturesMessage.collection.user_id + " picture_id为" + this.picturesMessage.picture.picture_id);
+        console.log("计算属性：" + this.isCollected);
+      },
+
+      close(){
+        console.log("picture-item-closing...");
+        //回调
+        this.$emit('deletePicture',this.picturesMessage.picture.picture_id, this.picturesMessage.column, this.picturesMessage.index);
       }
     },
   }

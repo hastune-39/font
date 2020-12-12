@@ -27,9 +27,6 @@
 
 
 <style>
-  .el-tag + .el-tag {
-    margin-left: 10px;
-  }
 
   .button-new-tag {
     margin-left: 10px;
@@ -50,7 +47,7 @@
   export default {
     data() {
       return {
-        dynamicTags: ['标签一', '标签二', '标签三'],
+        dynamicTags: [],
         inputVisible: false,
         inputValue: '',
         tagType: ['','success', 'info','warning','danger'],
@@ -79,6 +76,13 @@
         }
         this.inputVisible = false;
         this.inputValue = '';
+      },
+
+      /***
+       * 更改图片
+       */
+       insertKeyWords(keywords){
+          this.dynamicTags = keywords;
       }
     }
   }
