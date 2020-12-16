@@ -15,6 +15,9 @@ export default new Vuex.Store({
       address: String,
       profile_picture: String,
       signature: String,
+
+      //画师验证
+      isPainter: false,
     },
   },
 

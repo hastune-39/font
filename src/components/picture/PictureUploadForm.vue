@@ -55,6 +55,7 @@
 
       uploadForm(){
         this.dialogFormVisible = false
+        //0.若当前用户不是画师，则注册为画师
         //1.上传图片
         this.$refs.pictureUpload.submit(this.title, this.$refs.keyWordsTages.getdata());
       },

@@ -184,6 +184,7 @@
           name: 'PainterPage',
           params: {
             painter_id: _this.painterInfo.painter_id,
+            random: Math.floor(Math.random() * 10000),
           }
         })
       }

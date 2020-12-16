@@ -7,6 +7,8 @@ import UserFollow from '../view/main/UserFollow';
 import PainterPage from '../view/main/painter/PainterPage';
 import PictureUpload from '../components/picture/Upload';
 import PicturePage from '../components/PicturePage/page';
+import RankPage from '../components/ranklist/page';
+import Nothing from '../components/nothing'
 
 Vue.use(Router)
 
@@ -27,11 +29,24 @@ export default new Router({
           component: HomePage,
         },
 
+
         {
-          path: 'searchByKeywords/:type/:keyword',
-          name: 'searchKeywords',
+          path: '/search/title/:value/:random',
+          name: 'SearchByTitle',
           component: HomePage,
         },
+
+        {
+          path: '/search/keywords/:value/:random',
+          name: 'SearchByKeywords',
+          component: HomePage,
+        },
+
+        {
+          path: 'search/keywords'
+        },
+
+
         {
           path: 'User/Collection/:random',
           name: 'userCollection',
@@ -43,15 +58,33 @@ export default new Router({
           component: UserFollow,
         },
         {
-          path: 'Painter/:painter_id',
+          path: 'Painter/:painter_id/:random',
           name: 'PainterPage',
           component: PainterPage,
         },
         {
-          path: '/Picture',
+          path: '/Picture/:picture_id',
           name: 'PicturePage',
           component: PicturePage,
+        },
+
+        {
+          path: '/Rank',
+          name: 'Rank',
+          component: RankPage,
+        },
+        {
+          path: '/nothing',
+          name: 'nothing',
+          component: Nothing
+        },
+
+        {
+          path: '/History/:user_id/:random',
+          name: 'history',
+          component: HomePage,
         }
+
       ]
     },
 
@@ -63,6 +96,7 @@ export default new Router({
       path: '/Upload',
       component: PictureUpload
     },
+
 
 
 

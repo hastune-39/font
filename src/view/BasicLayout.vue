@@ -5,7 +5,7 @@
         <my-side-bar/>
       </el-aside>
       <el-container>
-        <el-header>
+        <el-header style="margin-top: 0px;">
           <my-head-bar/>
         </el-header>
         <el-main>

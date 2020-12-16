@@ -2,6 +2,11 @@
   <div>
     <!--    <el-button type="primary" icon="el-icon-edit" circle @click="changestore"></el-button>-->
     <!--        <el-button type="success" icon="el-icon-check" circle @click="mydebug"></el-button>-->
+    <el-row v-if="searchIsKeyword" :gutter="20" class="flex" style="margin-bottom: 10px">
+      <el-tag v-for="(content,index) in keywords" :key="index" :type="tagType[index%5]" style="margin-right: 5px">
+        {{content}}
+      </el-tag>
+    </el-row>
     <el-row :gutter="20" class="flex">
       <el-col v-for="(list,index) in lists" :key="index" :span="6">
         <div class="grid-content bg-purple">
@@ -72,6 +77,11 @@
           }
         ],
         pictureWidth: 500,
+
+        //关键字显示部分
+        tagType: ['', 'success', 'info', 'warning', 'danger'],
+        keywords: ["咒术回战", "五条悟", "无量空处", "DM袋喵"],
+        searchIsKeyword: false,
       }
     },
 
@@ -84,8 +94,6 @@
     },
 
     watch: {
-      '$route': 'search',
-
       userID() {
         console.log("监听用户id变化成功...");
         this.selectAllCollections();
@@ -118,7 +126,7 @@
           _this.lists[i].picturesMessage = [];
           console.log("正在重置List" + i + " ,重置后结果为： 高度" + _this.lists[i].totalHeight);
         }
-        console.log('完成pagelist的充值');
+        console.log('完成pagelist的重置');
       },
 
       //loading picture function
@@ -227,7 +235,7 @@
         //1.axios获得所有图片
         axios.get('/pictures/selectAll').then((response) => {
           _this.displayItems = response.data;
-          console.log("所有的图片信息为：" + _this.displayItems);
+          // console.log("所有的图片信息为：" + _this.displayItems);
           //2.列表初始化
           _this.initialsubList();
           //3.分配图片
@@ -237,39 +245,47 @@
         });
       },
 
-      //还没重写
-      selectByKeyword(keyword) {
-        console.log("开始准备selectByKeyword的axios,其中keyword是: " + keyword);
-        axios.get('/pictures/searchKeyword', {
+      selectByTitle(){
+        let _this = this;
+        let title = _this.$route.params.value;
+        console.log("准备搜集所有标题为"+title+"的图片");
+        //1.axios获得所有图片
+        axios.get('/select/title', {
           params: {
-            keyword: keyword
+            title: title,
           }
         }).then((response) => {
-          console.log("完成了selectByKeyword的axios,其中keyword为: " + keyword);
-          this.displayItems = response.data;
-          console.log(this.displayItems);
-          this.initialsubList();
-          //load all pictures
-          for (let i = 0; i < this.displayItems.length; i++) {
-            this.imgload(this.displayItems[i].picture_address, this.allocPicture);
-          }
+          _this.displayItems = response.data;
+          // console.log("所有的图片信息为：" + _this.displayItems);
+          //2.列表初始化
+          _this.initialsubList();
+          //3.分配图片
+          _this.allocAllPicture();
         }).catch(function (error) {
-          if (error.response) {
-            // The request was made and the server responded with a status code
-            // that falls out of the range of 2xx
-            console.log(error.response.data);
-            console.log(error.response.status);
-            console.log(error.response.headers);
-          } else if (error.request) {
-            // The request was made but no response was received
-            // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
-            // http.ClientRequest in node.js
-            console.log(error.request);
-          } else {
-            // Something happened in setting up the request that triggered an Error
-            console.log('Error', error.message);
+          console.log(error);
+        });
+      },
+
+
+      //还没重写
+      selectByKeywords(keywords) {
+        let _this = this;
+
+        console.log("准备搜集所有关键字串为"+keywords+"的图片");
+        //1.axios获得所有图片
+        axios.get('/select/keywords', {
+          params: {
+            keywords: keywords,
           }
-          console.log(error.config);
+        }).then((response) => {
+          _this.displayItems = response.data;
+          // console.log("所有的图片信息为：" + _this.displayItems);
+          //2.列表初始化
+          _this.initialsubList();
+          //3.分配图片
+          _this.allocAllPicture();
+        }).catch(function (error) {
+          console.log(error);
         });
       },
 
@@ -383,7 +399,67 @@
           }
         }
 
+      },
+
+      /***
+       * 排行榜部分
+       */
+      selectAllRankPicture(pictures){
+        this.displayItems = pictures;
+        this.initialsubList();
+        this.allocAllPicture();
+      },
+
+      /***
+       * 关键字部分，实现的很笨拙...
+       */
+      displayKeywords(keywords){
+        let newkeywords = [];
+        let temp = '';
+        for(let i=0;i<keywords.length;i++){
+          if(keywords[i] == ' ') {
+            if(temp.length > 0){
+              newkeywords.push(temp);
+              temp = '';
+            }
+            continue;
+          }else{
+            temp += keywords[i];
+          }
+        }
+        if(temp.length > 0){
+          newkeywords.push(temp);
+          temp = '';
+        }
+        console.log("关键字列表为: " + newkeywords);
+        this.keywords =newkeywords;
+        this.searchIsKeyword = true;
+      },
+
+      nodisplayKeywords(){
+        this.searchIsKeyword = false;
+      },
+
+      /***
+       * 浏览历史部分
+       */
+      showUserHistory(){
+        console.log("正在搜集用户的浏览历史...")
+        let _this = this;
+        let user_id = _this.$store.state.user.userID;
+        axios.get('/History',{
+          params: {
+            user_id: user_id,
+          }
+        }).then(function (res) {
+          _this.displayItems = res.data;
+          _this.initialsubList();
+          _this.allocAllPicture();
+        }).catch(function (err) {
+          console.log(err);
+        })
       }
+
     },
   }
 </script>

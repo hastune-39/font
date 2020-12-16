@@ -1,28 +1,26 @@
 <template>
   <div>
+<!--    <el-button @click="debug"></el-button>-->
     <el-card shadow="always">
       <div style="display: flex; flex-direction: row;">
         <div style=" width: 90px">
-          <img src="static/profilePicture/2.jpg"
+          <img :src="painterMessage.profile_picture"
                class="el-avatar el-avatar--circle"
-               style="height: 80px; width: 80px"
-               @click="skipToPainterPage">
-          <el-button v-if="status"
+               style="height: 80px; width: 80px">
+          <el-button v-if="follow_status"
                      type="primary"
-                     round class="button"
-                     @click="subCancelFollow">已关注
+                     round class="button">已关注
           </el-button>
           <el-button v-else
                      type="primary"
-                     round class="button"
-                     @click=subAddFollow>关注
+                     round class="button">关注
           </el-button>
         </div>
         <!--      个人介绍-->
         <div style="margin-left: 20px">
-          <div class="username">DM袋喵</div>
-          <div class="useraddress">北京</div>
-          <div class="usertext">Twitter@matchachWeibo@抹茶專門店AM Glad to see u and always be happy to make friends with u~ thx to all the u friendly to me!!(　′?｀) (ps.If u want chat with me,use en)...</div>
+          <div class="username">{{painterMessage.painterName}}</div>
+          <div class="useraddress">{{painterMessage.address}}</div>
+          <div class="usertext">{{painterMessage.signature}}</div>
         </div>
       </div>
     </el-card>
@@ -32,15 +30,14 @@
         其他作品
       </div>
       <div>
-        <el-row :gutter="2" style="margin-top: 10px; margin-bottom: 10px">
-          <el-col :span="8"><img src="static/img/DM袋喵/4.jpg" class="asideImg"/></el-col>
-          <el-col :span="8"><img src="static/img/DM袋喵/2.jpg" class="asideImg"/></el-col>
-          <el-col :span="8"><img src="static/img/DM袋喵/6.jpg" class="asideImg"/></el-col>
-        </el-row>
-        <el-row :gutter="2" style="margin-top: 10px; margin-bottom: 10px">
-          <el-col :span="8"><img src="static/img/DM袋喵/1.jpg" class="asideImg"/></el-col>
-          <el-col :span="8"><img src="static/img/DM袋喵/3.jpg" class="asideImg"/></el-col>
-          <el-col :span="8"><img src="static/img/DM袋喵/5.jpg" class="asideImg"/></el-col>
+        <el-row v-for="row in rowNum" :key="row"
+          :gutter="2" style="margin-top: 10px; margin-bottom: 10px">
+          <el-col :span="8" v-if="(row-1)*3 < otherPictures.length"><img  :src="otherPictures[(row-1)*3].address" class="asideImg"
+                                                                          @click="skipToPicture(otherPictures[(row-1)*3].picture_id)"/></el-col>
+          <el-col :span="8" v-if="(row-1)*3+1 < otherPictures.length"><img  :src="otherPictures[(row-1)*3+1].address" class="asideImg"
+                                                                                      @click="skipToPicture(otherPictures[(row-1)*3+1].picture_id)"/></el-col>
+          <el-col :span="8" v-if="(row-1)*3+2 < otherPictures.length"><img  :src="otherPictures[(row-1)*3+2].address" class="asideImg"
+                                                                            @click="skipToPicture(otherPictures[(row-1)*3+2].picture_id)"/></el-col>
         </el-row>
       </div>
     </el-card>
@@ -49,7 +46,74 @@
 
 <script>
   export default {
-    name: "aside"
+    name: "aside",
+
+    data() {
+      return {
+        painterMessage: {
+          painter_id: Number,
+          painterName: '',
+          address: '',
+          profile_picture: '',
+          signature: '',
+        },
+
+        follow_status: false,
+
+        otherPictures: [
+          {
+            picture_id: Number,
+            address: '',
+          }
+        ],
+      }
+    },
+
+    computed: {
+      rowNum(){
+        return Math.floor((this.otherPictures.length-1)/3+1);
+      },
+    },
+    methods: {
+      insertPainterMessage(painterMessage){
+        this.painterMessage = painterMessage;
+      },
+
+      insertFollowStatus(follow_status){
+        this.follow_status = follow_status;
+      },
+
+      insertOtherPictures(otherPictures){
+        this.otherPictures = otherPictures;
+      },
+
+      debug(){
+        // console.log(this.painterMessage.painterName);
+        // console.log(this.follow_status);
+        // console.log(this.otherPictures[0].address);
+        // console.log(this.otherPictures.length);
+        console.log(this.otherPictures.length);
+      },
+
+      overbound(rowNum, column){
+        return ((rowNum-1)*3+column -1 > this.otherPictures.length)? true:false;
+      },
+
+      /***
+       * 跳转至画作详情页部分
+       */
+      skipToPicture(picture_id){
+        let _this = this;
+        console.log("准备跳转至画作详情页...");
+        this.$router.push({
+          path: '/Picture',
+          name:  'PicturePage',
+          params: {
+            picture_id: picture_id,
+          }
+        })
+      }
+    }
   }
 </script>
 
@@ -93,7 +157,7 @@
     /*}*/
   }
 
-  .asideImg{
+  .asideImg {
     height: 90px;
     width: 90px;
     border-radius: 8px;

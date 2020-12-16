@@ -36,7 +36,13 @@
       </el-menu-item>
       <el-menu-item>
         <el-tooltip class="item" effect="dark" content="浏览历史" placement="right">
-          <i class="el-icon-video-camera"></i>
+          <i @click="skipToHistory" class="el-icon-video-camera"></i>
+        </el-tooltip>
+      </el-menu-item>
+
+      <el-menu-item @click="skipToRank">
+        <el-tooltip class="item" effect="dark" content="排行榜" placement="right">
+          <i class="el-icon-trophy-1"></i>
         </el-tooltip>
       </el-menu-item>
 
@@ -45,9 +51,9 @@
         <i class="el-icon-minus"></i>
       </el-menu-item>
 
-      <el-menu-item v-if="false">
+      <el-menu-item v-if="!isPainter">
         <el-tooltip class="item" effect="dark" content="上传你的第一幅作品，快注册成为小画家吧~" placement="right">
-          <a-icon type="smile"/>
+          <a-icon @click="openPictureForm" type="smile"/>
         </el-tooltip>
       </el-menu-item>
       <template v-else>
@@ -89,8 +95,10 @@
       myUploadPicture,
     },
 
-    computed() {
-
+    computed: {
+      isPainter(){
+        return this.$store.state.user.isPainter;
+      }
     },
 
 
@@ -137,9 +145,28 @@
         })
       },
 
+      skipToRank(){
+        console.log("正在跳转至排行榜...");
+        this.$router.push({
+          path: '/Rank',
+          name: 'Rank',
+        })
+      },
       openPictureForm(){
         console.log("user-side-bar");
         this.$refs.upPictureIcon.open();
+      },
+
+      skipToHistory(){
+        console.log("正在跳转至浏览历史");
+        this.$router.push({
+          path: '/History',
+          name: 'history',
+          params: {
+            user_id: this.$store.state.user.userID,
+            random: Math.floor(Math.random() * 10000),
+          }
+        })
       }
     }
   }

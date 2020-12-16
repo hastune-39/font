@@ -2,7 +2,7 @@
   <div class="item">
     <div class="item-content">
       <div style="position: relative;">
-        <img :src="picturesMessage.picture.picture_address" class="item-img" @click="mydebug">
+        <img :src="picturesMessage.picture.picture_address" class="item-img" @click="skipToPicture">
       </div>
       <div style="position: absolute; border-radius: 2px;border-color: deepskyblue; left: 0%;bottom: 0%;
   margin-left: 5px; margin-bottom: 5px">
@@ -81,6 +81,21 @@
         console.log("picture-item-closing...");
         //回调
         this.$emit('deletePicture',this.picturesMessage.picture.picture_id, this.picturesMessage.column, this.picturesMessage.index);
+      },
+
+      /***
+       * 跳转至画作详情页部分
+       */
+      skipToPicture(){
+        let _this = this;
+        console.log("准备跳转至画作详情页...");
+        this.$router.push({
+          path: '/Picture',
+          name:  'PicturePage',
+          params: {
+            picture_id: _this.picturesMessage.picture.picture_id,
+          }
+        })
       }
     },
   }
