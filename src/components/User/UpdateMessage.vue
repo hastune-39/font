@@ -1,6 +1,6 @@
 <template>
-
 </template>
+
 
 <script>//本文件只管用户的信息更新事务，与template无关
 import axios from "axios";
@@ -8,14 +8,25 @@ export default {
 
   name: "UpdateMessage",
 
-  data() {//data:与data的区别是什么?为什么要这样写?
-    return {}
+  components:{
+
+  },
+
+  data() {
+    return{
+      dialogFormVisible: false,
+    }
   },
   /***
    * 提供单一的更改姓名、更改地址、更改个性签名、更改用户个人头像方法
    * 暂时未提供更改用户密码功能
    */
   methods: {
+    //1.设置可见度
+    open(){
+      this.dialogFormVisible = true;
+    },
+
     //重新拉取用户信息
     getUserMessage(id){
       let _this = this;
@@ -29,7 +40,7 @@ export default {
         //2.将response.data结果存储到store里
         _this.$store.commit('updateUserMessage',response.data);
         //3.更新信息成功反馈
-        this.$message({
+        _this.$message({
           message: '成功更改用户信息~',
           type: 'success'
         });
@@ -39,6 +50,7 @@ export default {
     },
 
     updateUserName(name) {//post和put的区别是什么?
+      console.log("正在更改用户名为"+ name);
       let _this = this;
       //axios post body json
       axios.post('/users/update', {

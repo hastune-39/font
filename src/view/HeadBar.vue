@@ -1,7 +1,6 @@
 <template>
   <el-row :gutter="20">
-    <el-col :span="4"><img src="static/icon.9a42bbfa.svg" style="float: left; margin-top: 5px"></el-col>
-    <el-col :span="16">
+    <el-col :span="24">
       <el-select v-model="value" :placeholder="options[0].label" style="width: 80px; margin-top: 10px">
         <el-option
           v-for="item in options"
@@ -67,6 +66,7 @@
             message: '请输入搜索内容',
             center: true,
             type: 'warning',
+            showClose: true,
           });
           return;
         }

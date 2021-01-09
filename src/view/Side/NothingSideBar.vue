@@ -46,6 +46,17 @@
         //   .catch(_ => {});
       },
 
+      registerSuccessfully(){
+        console.log('test....');
+        //设置弹框不可见
+        this.dialogVisible = false;
+        //登陆成功消息提示
+        this.$notify({
+          title: '注册成功',
+          // message: '这是一条成功的提示消息',
+          type: 'success'
+        });
+      },
       loginSuccessfully() {
         console.log('test....');
         //设置弹框不可见

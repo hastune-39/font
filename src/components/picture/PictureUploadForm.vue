@@ -2,6 +2,7 @@
   <el-dialog
     :visible.sync="dialogFormVisible"
     width="30%"
+    :append-to-body="true"
     style="margin-top: 100px">
     <div style="display: flex; flex-direction: row">
       <div style="display: flex; flex-direction: column; width: 150px">
@@ -31,6 +32,7 @@
 <script>
   import myUpload from './Upload';
   import myKeyWordTage from './KeyWordTag';
+  import axios from 'axios';
 
   export default {
     name: "PictureUploadForm",
@@ -47,6 +49,13 @@
       }
     },
 
+    computed: {
+      isPainter(){
+        return this.$store.state.user.isPainter;
+      }
+    },
+
+
     methods: {
       open() {
         console.log("picture-upload-form");
@@ -54,10 +63,31 @@
       },
 
       uploadForm(){
-        this.dialogFormVisible = false
+        let _this = this;
+        _this.dialogFormVisible = false;
         //0.若当前用户不是画师，则注册为画师
-        //1.上传图片
-        this.$refs.pictureUpload.submit(this.title, this.$refs.keyWordsTages.getdata());
+        if(!_this.isPainter){
+          let user_id = _this.$store.state.user.userID;
+          axios.post('/painters/painter/register', {
+            user_id: user_id,
+          }).then(function (res) {
+            //vuex状态提交
+            _this.$store.commit('painterRegister');
+            console.log(_this.$store.state.user.isPainter);
+            //1.上传图片
+            _this.$refs.pictureUpload.submit(_this.title, _this.$refs.keyWordsTages.getdata());
+            //2.注册反馈
+            _this.$notify({
+              title: '注册成功',
+              message: '你已经是一名合格的小画家啦~',
+            });
+          }).catch(function (err) {
+            console.log(err);
+          })
+        }else{
+          //1.上传图片
+          _this.$refs.pictureUpload.submit(_this.title, _this.$refs.keyWordsTages.getdata());
+        }
       },
     }
   }

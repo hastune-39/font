@@ -7,7 +7,7 @@
       closable
       :disable-transitions="false"
       @close="handleClose(tag)"
-      style="margin-top: 5px; margin-bottom: 5px;}">
+      style="margin-top: 5px; margin-bottom: 5px; margin-right: 5px}">
       {{tag}}
     </el-tag>
     <el-input

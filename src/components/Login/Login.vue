@@ -14,7 +14,7 @@
         <!--        <el-button type="primary" @click="login(this.$refs.ruleForm.loginName, this.$refs.ruleForm.pass)">登录</el-button>-->
         <!--        <el-button @click="registe(this.$refs.ruleForm.loginName, this.$refs.ruleForm.pass)">注册</el-button>-->
         <el-button type="primary" @click="login">登录</el-button>
-        <el-button @click="registe">注册</el-button>
+        <el-button @click="registe">注册并登录</el-button>
       </el-form-item>
     </el-form>
   </div>
@@ -139,24 +139,14 @@
           }
         }).then(function (response) {
           console.log("注册了一个用户,用户名为: " + inputLoginName, " 密码为: " + inputPassword);
-          //关闭loading动画，提示成功
+          //注册完后显示登陆成功
+          _this.login();
         }).catch(function (error) {
-          if (error.response) {
-            // The request was made and the server responded with a status code
-            // that falls out of the range of 2xx
-            console.log(error.response.data);
-            console.log(error.response.status);
-            console.log(error.response.headers);
-          } else if (error.request) {
-            // The request was made but no response was received
-            // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
-            // http.ClientRequest in node.js
-            console.log(error.request);
-          } else {
-            // Something happened in setting up the request that triggered an Error
-            console.log('Error', error.message);
-          }
-          console.log(error.config);
+          _this.$message({
+            message: '该用户名已注册',
+            type: 'error',
+            center: true,
+          });
         })
       },
 

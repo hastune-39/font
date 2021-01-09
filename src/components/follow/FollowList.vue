@@ -1,8 +1,8 @@
 <template>
   <div>
     <div v-for="(follow,index) in followList" :key="index">
-        <FollowItem :painter-info="painterInfo[index]" :picturesInfo="picturesInfo[index]"
-        @addFollow="addFollow" @cancelFollow = "cancelFollow"></FollowItem>
+        <FollowItem :status="followList[index].status" :painter-info="painterInfo[index]" :picturesInfo="picturesInfo[index]"
+        @addFollow="addFollow" @cancelFollow = "cancelFollow" ref="getFollowStatus"></FollowItem>
     </div>
 
     <el-row :gutter="20">
@@ -30,6 +30,7 @@
           {
             painter_id: Number,
             followTime: String,
+            status: Boolean,
           }
         ],
 
@@ -193,7 +194,9 @@
 
 
       }
-    }
+    },
+
+
   }
 </script>
 

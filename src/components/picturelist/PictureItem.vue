@@ -12,8 +12,8 @@
         <!-- <el-dropdown-menu slot="dropdown"></el-dropdown-menu> -->
       </div>
 
-      <div style="position: absolute; right: 0%; top: 0%; margin-right: 5px; margin-top: 5px">
-        <my-picture-utils :picture="picturesMessage.picture"/>
+      <div v-if="painter_id == picturesMessage.picture.painter_id" style="position: absolute; right: 0%; top: 0%; margin-right: 5px; margin-top: 5px">
+        <my-picture-utils  :picture="picturesMessage.picture"/>
       </div>
     </div>
   </div>
@@ -56,6 +56,10 @@
     },
 
     computed: {//计算样式
+      painter_id(){
+        return this.$store.state.user.userID;
+      },
+
       isCollected() {
         return (this.picturesMessage.collection.user_id >= 0) ? true : false;
       }

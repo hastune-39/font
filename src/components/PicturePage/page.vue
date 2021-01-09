@@ -75,6 +75,10 @@
       }
     },
 
+    watch: {
+      '$route': 'BeforeSkip',
+    },
+
     methods: {
       getPictureMessage(picture_id) {
         let _this = this;
@@ -174,7 +178,9 @@
             picture_id: picture_id,
           }
         }).then(function (response) {
+          console.log("开始评论的调试信息...");
           _this.comments = response.data;
+          for(let i=0;i<_this.comments.length;i++) console.log(_this.comments[i].comment_message.like_status)
           _this.$refs.pageMain.getComments(_this.comments);
         }).catch(function (err) {
           console.log(err);
@@ -212,6 +218,13 @@
         this.getPictureKeywords(picture_id);
         this.getPainterMessage(picture_id);
         this.getPictureComments(picture_id);
+      },
+
+      BeforeSkip(){
+        console.log("非create的路由监听跳转至画作详情页");
+        if(this.$route.name == 'PicturePage'){
+          this.skip();
+        }
       },
 
       addBrowse(user_id, picture_id){

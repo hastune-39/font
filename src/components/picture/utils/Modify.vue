@@ -7,7 +7,7 @@
       <div style="display: flex; flex-direction: column; width: 150px">
         <!--        <my-upload ref="pictureUpload"></my-upload>-->
         <div style="width: 148px; height: 148px;">
-          <img :src="picture_address" style="width: 100%; height: 100%; border-radius: 16px">
+          <img :src="picture_address" style="width: 100%; max-height: 100%;object-fit: cover; border-radius: 16px">
         </div>
         <el-input v-model="title"
                   placeholder="请输入标题"
@@ -106,6 +106,12 @@
       update() {
          this.updateTitle(this.picture_id, this.title);
          this.updateKeywords(this.picture_id, this.$refs.keyWordsTags.getdata());
+        this.$message({
+          message: '更改画作信息成功!',
+          center: true,
+          showClose: true,
+          type: 'success'
+        });
       },
 
       updateTitle(picture_id, title){

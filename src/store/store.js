@@ -28,6 +28,10 @@ export default new Vuex.Store({
 
     updateUserMessage(state, inputUser){
       state.user = inputUser;
+    },
+
+    painterRegister(state){
+      state.user.isPainter = true;
     }
   },
 })

@@ -1,6 +1,6 @@
 <template>
   <div class="LeftSide Position">
-    <el-menu class="el-menu-vertical-demo" :collapse="true">
+    <el-menu style="height: 100%;" class="el-menu-vertical-demo" :collapse="true">
       <el-menu-item>
         <el-tooltip class="item" effect="dark" content="主页" placement="right">
           <i class="el-icon-s-home" @click="skipToHome"></i>
@@ -12,12 +12,10 @@
             <a-icon type="idcard"/>
           </el-tooltip>
         </template>
-        <el-menu-item-group>
-          <my-individual-card/>
+          <my-individual-card style="height: 100%; width: 100%"/>
           <!--          <span slot="title">分组一</span>-->
           <!--          <el-menu-item index="1-1">选项1</el-menu-item>-->
           <!--          <el-menu-item index="1-2">选项2</el-menu-item>-->
-        </el-menu-item-group>
         <!--        <el-submenu index="1-4">-->
         <!--          <span slot="title">选项4</span>-->
         <!--          <el-menu-item index="1-4-1">选项1</el-menu-item>-->
@@ -47,7 +45,7 @@
       </el-menu-item>
 
 
-      <el-menu-item disabled="true">
+      <el-menu-item :disabled="true">
         <i class="el-icon-minus"></i>
       </el-menu-item>
 
@@ -64,12 +62,7 @@
         </el-menu-item>
         <el-menu-item>
           <el-tooltip class="item" effect="dark" content="我的画作" placement="right">
-            <i class="el-icon-picture"></i>
-          </el-tooltip>
-        </el-menu-item>
-        <el-menu-item>
-          <el-tooltip class="item" effect="dark" content="我的画集" placement="right">
-            <i class="el-icon-notebook-1"></i>
+            <i @click="skipToPainterPage" class="el-icon-picture"></i>
           </el-tooltip>
         </el-menu-item>
       </template>
@@ -164,6 +157,18 @@
           name: 'history',
           params: {
             user_id: this.$store.state.user.userID,
+            random: Math.floor(Math.random() * 10000),
+          }
+        })
+      },
+
+      skipToPainterPage() {
+        let _this = this;
+        this.$router.push({
+          path: 'Painter',
+          name: 'PainterPage',
+          params: {
+            painter_id: _this.$store.state.user.userID,
             random: Math.floor(Math.random() * 10000),
           }
         })

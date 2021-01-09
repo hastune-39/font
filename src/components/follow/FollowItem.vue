@@ -1,7 +1,7 @@
 <template>
   <el-card class="artist-list"
-    shadow="hover"
-    style="margin-top: 0px; margin-bottom: 20px; padding: 5px">
+           shadow="hover"
+           style="margin-top: 0px; margin-bottom: 20px; padding: 5px">
     <el-row :gutter="20" style="margin: 0px">
       <!--个人头像,1.圆形图标：el-circle, 2.调整图标大小80px-->
       <el-col :span="3" style="margin-top: 10px">
@@ -55,6 +55,8 @@
     name: "FollowItem",
 
     props: {
+      status: Boolean,
+
       painterInfo: {
         painter_id: Number,
         userName: "loading...",
@@ -77,11 +79,9 @@
 
     data() {
       return {
-        status: true,
         painter_id: Number,
       }
     },
-
     methods: {
       /***
        * 基本方法
@@ -147,7 +147,24 @@
         })
       },
 
-
+      ItemGetFollowStatus(user_id, painter_id) {
+        let _this = this;
+        console.log("正在获取关注状态aaa...");
+        console.log("111111");
+        axios.get('/follow/get', {
+          params: {
+            user_id: user_id,
+            painter_id: painter_id,
+          }
+        }).then(function (res) {
+          console.log("222222");
+          _this.status = res.data.status;
+          console.log("关注状态为："+ _this.status);
+        }).catch(function (err) {
+          console.log(err);
+        })
+        console.log("33333333");
+      },
       /***
        * 关注/取关,都交给父来做吧!
        */
